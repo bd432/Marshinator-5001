@@ -39,7 +39,7 @@ void loop() {
   if (Serial.available()){
     serial_in = Serial.read();
     if(serial_in >= '0' && serial_in <= '4'){
-      driving0_state = (serial_in - '0');
+      driving_state = (serial_in - '0');
       Serial.println(driving_state);
       set_drive(driving_state);
     }
