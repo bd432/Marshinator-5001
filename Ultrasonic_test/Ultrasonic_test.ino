@@ -21,13 +21,14 @@ void loop() {
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
   distanceCm = duration * 0.0340 / 2;
-  Serial.print(distanceCm);
-  Serial.println(" cm");
+  //Serial.print(distanceCm);
+  //Serial.println(" cm");
 
 
   //IR sensor
   IROutput = analogRead(A2);
   Serial.print("IR - ");
-  Serial.println(29.988 * pow( IROutput * 5.0/ 1023.0 ,-1.173));
-  delay(1000);
+  //.println(29.988 * pow( IROutput * 5.0/ 1023.0 ,-1.173));
+  Serial.println(IROutput);
+  delay(250);
 }
