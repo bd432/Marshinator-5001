@@ -42,4 +42,4 @@ long read_ultrasound(void);
 void set_drive(driving_state_t state, int d_speed);
 double calc_finite_difference(track_t list, double dt);
 double calc_average(track_t list, int N);
-void turn_reset(bool turn_right);
+void turn_and_pulse(bool turn_right);
