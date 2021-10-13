@@ -9,6 +9,7 @@ Adafruit_DCMotor *Motor2 = AFMS.getMotor(2);
 
 int driving_state = 0;
 char serial_in;
+int drive_speed = 255;
 
 // Send commands to the arduino by typing 0-4 in the Serial link
 // 0 = Stationary
@@ -29,8 +30,8 @@ void setup() {
   Serial.println("Motor Shield found.");
 
   // Set motors to stop
-  Motor1->setSpeed(255);
-  Motor2->setSpeed(255);
+  Motor1->setSpeed(drive_speed);
+  Motor2->setSpeed(drive_speed);
   Motor1->run(RELEASE);
   Motor2->run(RELEASE);
 }
@@ -47,8 +48,8 @@ void loop() {
 }
 
 void set_drive(int state){
-  Motor1->setSpeed(255);
-  Motor2->setSpeed(255);
+  Motor1->setSpeed(drive_speed);
+  Motor2->setSpeed(drive_speed);
 
   switch (state){
     case 0:
