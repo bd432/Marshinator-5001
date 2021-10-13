@@ -11,7 +11,7 @@ int driving_state = 0;
 char serial_in;
 int drive_speed = 255;
 
-// Send commands to teh arduino by typing 0-4 in the Serial link
+// Send commands to the arduino by typing 0-4 in the Serial link
 // 0 = Stationary
 // 1 = Forwards
 // 2 = Backwards
