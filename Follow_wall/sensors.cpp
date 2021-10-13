@@ -14,3 +14,4 @@ long read_ultrasound() {
 	duration = pulseIn(echoPin, HIGH);
 	distanceCm = duration * 0.0340 / 2;
 	return distanceCm;
+}
