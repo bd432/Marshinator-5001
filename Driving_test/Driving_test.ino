@@ -10,7 +10,7 @@ Adafruit_DCMotor *Motor2 = AFMS.getMotor(2);
 int driving_state = 0;
 char serial_in;
 
-// Send commands to teh arduino by typing 0-4 in the Serial link
+// Send commands to the arduino by typing 0-4 in the Serial link
 // 0 = Stationary
 // 1 = Forwards
 // 2 = Backwards
