@@ -5,6 +5,15 @@
 #define trigPin 0
 #define echoPin A0
 
+// Program constants
+#define delta_t 0.1 // s
+#define upper_wall_bound 30
+#define lower_wall_bound 10
+#define drive_speed 255
+
+
+
+
 class track_t {
   // Class that acts as 100 long list
   // add()ios the same as append
@@ -21,8 +30,16 @@ class track_t {
     double pos[100];  
 };
 
-enum driving_state
+enum driving_state_t { STATIONARY = 0, FORWARDS = 1, BACKWARDS = 2, RIGHT = 3, LEFT = 4};
+
+// Declare global variables in all files
+extern track_t ultrasound_list;
 
 // Function Prototypes
 void setup_motors(void);
+void setup_sensors(void);
 long read_ultrasound(void);
+void set_drive(driving_state_t state, int d_speed);
+double calc_finite_difference(track_t list, double dt);
+double calc_average(track_t list, int N);
+void turn_reset(bool turn_right);

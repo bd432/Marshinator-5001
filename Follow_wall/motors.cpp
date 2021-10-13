@@ -14,38 +14,36 @@ void setup_motors(void){
     }
     Serial.println("Motor Shield found.");
     // Set motors to stop
-    Motor1->setSpeed(255);
-    Motor2->setSpeed(255);
+    Motor1->setSpeed(drive_speed);
+    Motor2->setSpeed(drive_speed);
     Motor1->run(RELEASE);
     Motor2->run(RELEASE);
 }
 
-void set_drive(int state){
-  Motor1->setSpeed(drive_speed);
-  Motor2->setSpeed(drive_speed);
+void set_drive(driving_state_t state, int d_speed){
+  Motor1->setSpeed(d_speed);
+  Motor2->setSpeed(d_speed);
 
   switch (state){
-    case 0:
+    case STATIONARY:
       Motor1->run(RELEASE);
       Motor2->run(RELEASE);
       break;
-    case 1:
+    case FORWARDS:
       Motor1->run(FORWARD);
       Motor2->run(FORWARD);
       break;    
-    case 2:
+    case BACKWARDS:
       Motor1->run(BACKWARD);
       Motor2->run(BACKWARD);
       break;    
-    case 3:
+    case RIGHT:
       Motor1->run(FORWARD);
       Motor2->run(BACKWARD);
       break;    
-    case 4:
+    case LEFT:
       Motor1->run(BACKWARD);
       Motor2->run(FORWARD);
       break;    
   }
-
-  
 }

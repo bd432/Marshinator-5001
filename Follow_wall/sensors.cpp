@@ -14,3 +14,8 @@ long read_ultrasound() {
 	distanceCm = duration * 0.0340 / 2;
 	return distanceCm;
 }
+
+void setup_sensors(void){
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
