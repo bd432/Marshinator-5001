@@ -1,4 +1,4 @@
-#include <marshinator.h>
+#include "marshinator.h"
 #include <Adafruit_MotorShield.h>
 
 
@@ -32,6 +32,9 @@ void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps
   Serial.println("Reset Motor test");
 
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
   if (!AFMS.begin()) {         // create with the default frequency 1.6KHz
     Serial.println("Could not find Motor Shield. Check wiring.");
     while (1);
@@ -52,7 +55,8 @@ void loop(){
 
   // Calculate orientation?
   
-  read_ultrasound()
+  Serial.println(read_ultrasound());
+  delay(1000);
 
  
 }
