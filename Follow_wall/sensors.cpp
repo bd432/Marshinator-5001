@@ -11,7 +11,7 @@ long read_ultrasound() {
 	delayMicroseconds(10);
 	digitalWrite(trigPin, LOW);
 	duration = pulseIn(echoPin, HIGH);
-	distanceCm = duration * 0.0340 / 2;
+	distanceCm = duration * 0.0340 / 2.0;
 	return distanceCm;
 }
 

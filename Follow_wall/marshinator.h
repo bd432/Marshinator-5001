@@ -6,8 +6,8 @@
 #define echoPin A0
 
 // Program constants
-#define delta_t 0.1 // s
-#define upper_wall_bound 30
+#define delta_t 0.2 // s
+#define upper_wall_bound 40
 #define lower_wall_bound 10
 #define drive_speed 255
 
@@ -22,7 +22,7 @@ class track_t {
   public:
     unsigned short n;
     void add( double x){pos[p] = x; p++; n ++; if(n > N_MAX) n = 0; if(p == N_MAX) p = 0;}
-    double fetch(int i){int j = p - j - 1; if(j < 0) j+= N_MAX; return pos[j];}
+    double fetch(int i){int j = p - i - 1; if(j < 0) j+= N_MAX; return pos[j];}
 
   private:
     const int N_MAX = 100;
