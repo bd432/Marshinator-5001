@@ -29,7 +29,7 @@ void loop(){
   if (ultrasound_list.n == 0 || abs(der) < 100) ultrasound_list.add(ultra_Op);
   else ultrasound_list.add(ultrasound_list.fetch(0));
 
-  if (ultrasound_list.n > 4){
+  if (ultrasound_list.n >= 4){
     der = calc_finite_difference(ultrasound_list, delta_t);
     double average = calc_average(ultrasound_list, 4);
 
@@ -38,12 +38,15 @@ void loop(){
     else if (der < 0.0 && average < lower_wall_bound) turn_and_pulse(true);
   }
 
-  Serial.print("Derivative - ");
+  /* Serial.print("Derivative - ");
   Serial.print(der);
   Serial.print(" ; Distance - ");
-  Serial.println(ultrasound_list.fetch(0));
+  Serial.println(ultrasound_list.fetch(0)); 
 
-  delay(1000 * delta_t);
+  delay(1000 * delta_t); */
+
+ Serial.print(int(read_shortIR));
+ Serial.println(" cm");
 
 }
 

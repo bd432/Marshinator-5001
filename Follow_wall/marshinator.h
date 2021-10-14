@@ -4,6 +4,7 @@
 // Pin i/o ports
 #define trigPin 0
 #define echoPin A0
+#define shortIRPin A1
 
 // Program constants
 #define delta_t 0.2 // s
@@ -43,3 +44,5 @@ void set_drive(driving_state_t state, int d_speed);
 double calc_finite_difference(track_t list, double dt);
 double calc_average(track_t list, int N);
 void turn_and_pulse(bool turn_right);
+double read_shortIR(void);
+double IR_average_value(int average_count);
