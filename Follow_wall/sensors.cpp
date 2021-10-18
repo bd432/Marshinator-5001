@@ -3,14 +3,27 @@
 
 
 void setup_sensors(void){
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+  pinMode(trigPin1, OUTPUT);
+  pinMode(echoPin1, INPUT);
+  pinMode(trigPin2, OUTPUT);
+  pinMode(echoPin2, INPUT);
   pinMode(shortIRPin, OUTPUT);
 }
   
 //Read Ultrasound sensor
-double read_ultrasound(int N) {
+double read_ultrasound(int sensor_no,int N) {
 	double distance, sum = 0.0;
+  int trigPin, echoPin;
+  
+  // Sensor input -- 1: Left; 2: Front;
+  if(sensor_no == 1){
+    trigPin = trigPin1;
+    echoPin = echoPin1;
+  }
+  else {
+    trigPin = trigPin2;
+    echoPin = echoPin2;
+  }
  
   for(int i = 0; i < N; i++){
 	  digitalWrite(trigPin, LOW);
@@ -25,31 +38,12 @@ double read_ultrasound(int N) {
 	return sum/N;
 }
 
-//Functions for reading the Short IR Sensor
-/*double read_shortIR(int average_count) {
+double read_shortIR(int average_count) {
   double sum = 0;
   for (int i=0; i<average_count; i++) {
     double sensor_value = analogRead(shortIRPin); //read the sensor value
     double distance_cm = pow(3027.4/sensor_value, 1.2134); //convert readings to distance(cm)
     sum += distance_cm;
-  }
-  return(sum/average_count);
-}*/
-
-
-
-double read_shortIR(int average_count) {
-//int ir_sensor = A0;
-  double distance = round(0.1*average_value(100))*10; //loop 100 times and get its average
-  return distance;
-}
-
-double average_value(int average_count) {
-  double sum = 0;
-  for (int i=0; i<average_count; i++) {
-    double sensor_value = analogRead(shortIRPin); //read the sensor value
-    double distance_cm = pow(3027.4/sensor_value, 1.2134); //convert readings to distance(cm)
-    sum = sum + distance_cm;
   }
   return(sum/average_count);
 }

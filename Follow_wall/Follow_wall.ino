@@ -2,8 +2,9 @@
 
 // Follow around the wall clockwise
 
-
-track_t ultrasound_list;
+// List 1: Left US sensor
+// List 2: Front US sensor
+track_t ultrasound_1_list, ultrasound_2_list;
 
 void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps
@@ -12,35 +13,42 @@ void setup() {
 
   setup_sensors();
   setup_motors();
+
+  //Initial drive state
   driving_state_t initial_dr = STATIONARY;
   set_drive(initial_dr , drive_speed);
 }
 
 
 void loop(){
-  // Define static variables
-  static driving_state_t driving_state = STATIONARY;
 
-  //Reads ultrasonic output and adds to the list if the robot not anaomolous (travelling < 1 m/s) - otherwise repeats previous reading
-  double ultra_Op = read_ultrasound(20);
-  double der = (ultra_Op - ultrasound_list.fetch(0))/delta_t;
-  if (ultrasound_list.n == 0 || abs(der) < 100) ultrasound_list.add(ultra_Op);
-  else ultrasound_list.add(ultrasound_list.fetch(0));
 
-  if (ultrasound_list.n >= 4){
-    der = calc_finite_difference(ultrasound_list, delta_t);
-    //double average = calc_average(ultrasound_list, 4);u
+  // Reads left ultrasonic output and adds to the list if the robot not anaomolous (travelling < 1 m/s) - otherwise repeats previous reading
+  double ultra_Op = read_ultrasound(1,20);
+  double derivative = (ultra_Op - ultrasound_1_list.fetch(0))/delta_t;
+  if (ultrasound_1_list.n == 0 || abs(der) < 100) ultrasound_1_list.add(ultra_Op);
+  else ultrasound_1_list.add(ultrasound_1_list.fetch(0));
+
+  // Reads front ultrasonic output and adds it to list
+  ultrasound_2_list.add(read_ultrasound(2,20));
+
+  // Execute right turn if close to the end wall
+  if(ultrasound_2_list.fetch(0) < 6) corner_turn();
+  
+  // Check if within bounds and moving in the right direction -- Correct if otherwise
+  if (ultrasound_1_list.n >= 4){
+    derivative = calc_finite_difference(ultrasound_1_list, delta_t);
 
     // Calls turn and pulse function if out of bounds and moving away
-    //if (der >= 0.0 && ultrasound_list.fetch(0) > upper_wall_bound) turn_and_pulse(false);
-    //else if (der <= 0.0 && ultrasound_list.fetch(0) < lower_wall_bound) turn_and_pulse(true);
+    if (derivative >= 0.0 && ultrasound_list.fetch(0) > upper_wall_bound) turn_and_pulse(false);
+    else if (derivative <= 0.0 && ultrasound_list.fetch(0) < lower_wall_bound) turn_and_pulse(true);
   }
 
   //Print of distance/derivative values
   Serial.print("Derivative - ");
   Serial.print(der);
   Serial.print(" - Distance - ");
-  Serial.println(ultrasound_list.fetch(0)); 
+  Serial.println(ultrasound_1_list.fetch(0)); 
   
 
   double IR_Op = read_shortIR(20);
@@ -79,25 +87,34 @@ void turn_and_pulse(bool turn_right){
   if(turn_right) Serial.println("Turn right");
   else Serial.println("Turn left");
   Serial.print("Distance - ");
-  Serial.println(ultrasound_list.fetch(0)); 
+  Serial.println(ultrasound_1_list.fetch(0)); 
 
   //Turn robot
   if (turn_right) d_state = RIGHT;
   else d_state = LEFT;
   set_drive(d_state, drive_speed);
   delay(200); // turning time for experimentation
-  //Drive forwards
-  d_state = FORWARDS;
-  set_drive(d_state, drive_speed);
-  // Record 4 more pulses before returning to script
-  for (int i = 0; i < 4; i++){
-    delay(delta_t);
-    ultrasound_list.add(read_ultrasound(2));
-  }
-
-  
+  //Reset
+  reset_after_turn(4);
 }
 
+void corner_turn(void){
+  driving_state_t d_state = RIGHT;
+  set_drive(d_state, drive_speed);
+  //Edit for 90 degree turn
+  delay(500);
+  reset_after_turn(int N);
+}
+
+void reset_after_turn(int N){
+   driving_state_t d_state = FORWARDS;
+   set_drive(d_state, drive_speed);
+   for (int i = 0; i < N; i++){
+   delay(delta_t);
+   ultrasound_1_list.add(read_ultrasound(1,20));
+   ultrasound_1_list.add(read_ultrasound(2,20));
+  }  
+}
 
 
   
