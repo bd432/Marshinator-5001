@@ -37,11 +37,11 @@ void set_drive(driving_state_t state, int d_speed){
       Motor1->run(BACKWARD);
       Motor2->run(BACKWARD);
       break;    
-    case RIGHT:
+    case LEFT:
       Motor1->run(FORWARD);
       Motor2->run(BACKWARD);
       break;    
-    case LEFT:
+    case RIGHT:
       Motor1->run(BACKWARD);
       Motor2->run(FORWARD);
       break;    
