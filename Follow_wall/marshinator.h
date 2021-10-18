@@ -11,10 +11,14 @@
 #define upper_wall_bound 40
 #define lower_wall_bound 10
 <<<<<<< HEAD
+<<<<<<< HEAD
 #define drive_speed 200
 =======
 #define drive_speed 150
 >>>>>>> 58997246a6c8d99740cb5cd845d379fba106fda0
+=======
+#define drive_speed 150
+>>>>>>> parent of 79af727 (Monday Lab)
 
 
 

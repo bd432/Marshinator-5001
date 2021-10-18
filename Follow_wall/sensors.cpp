@@ -29,7 +29,10 @@ double read_ultrasound(int N) {
 //Function for reading the Short IR Sensor
 =======
 //Functions for reading the Short IR Sensor
+<<<<<<< HEAD
 >>>>>>> 58997246a6c8d99740cb5cd845d379fba106fda0
+=======
+>>>>>>> parent of 79af727 (Monday Lab)
 double read_shortIR(int average_count) {
   double sum = 0;
   for (int i=0; i<average_count; i++) {
