@@ -12,14 +12,14 @@ void setup() {
 
   setup_sensors();
   setup_motors();
-  driving_state_t initial_dr = FORWARDS;
+  driving_state_t initial_dr = STATIONARY;
   set_drive(initial_dr , drive_speed);
 }
 
 
 void loop(){
   // Define static variables
-  static driving_state_t driving_state = FORWARDS;
+  static driving_state_t driving_state = STATIONARY;
 
   //Reads ultrasonic output and adds to the list if the robot not anaomolous (travelling < 1 m/s) - otherwise repeats previous reading
   double ultra_Op = read_ultrasound(20);
@@ -29,11 +29,11 @@ void loop(){
 
   if (ultrasound_list.n >= 4){
     der = calc_finite_difference(ultrasound_list, delta_t);
-    double average = calc_average(ultrasound_list, 4);
+    //double average = calc_average(ultrasound_list, 4);u
 
     // Calls turn and pulse function if out of bounds and moving away
-    if (der >= 0.0 && average > upper_wall_bound) turn_and_pulse(false);
-    else if (der <= 0.0 && average < lower_wall_bound) turn_and_pulse(true);
+    //if (der >= 0.0 && ultrasound_list.fetch(0) > upper_wall_bound) turn_and_pulse(false);
+    //else if (der <= 0.0 && ultrasound_list.fetch(0) < lower_wall_bound) turn_and_pulse(true);
   }
 
   //Print of distance/derivative values
@@ -45,8 +45,8 @@ void loop(){
 
   double IR_Op = read_shortIR(20);
 
-  //Serial.print("Short IR - ");
-  //Serial.println(IR_Op);
+  Serial.print("Short IR - ");
+  Serial.println(IR_Op);
   delay(1000 * delta_t);
 
 }
@@ -76,11 +76,16 @@ double calc_average(track_t list, int N){
 void turn_and_pulse(bool turn_right){
   driving_state_t d_state;
 
+  if(turn_right) Serial.println("Turn right");
+  else Serial.println("Turn left");
+  Serial.print("Distance - ");
+  Serial.println(ultrasound_list.fetch(0)); 
+
   //Turn robot
   if (turn_right) d_state = RIGHT;
   else d_state = LEFT;
   set_drive(d_state, drive_speed);
-  delay(300); // turning time for experimentation
+  delay(200); // turning time for experimentation
   //Drive forwards
   d_state = FORWARDS;
   set_drive(d_state, drive_speed);
@@ -90,8 +95,6 @@ void turn_and_pulse(bool turn_right){
     ultrasound_list.add(read_ultrasound(2));
   }
 
-  if(turn_right) Serial.println("Turn right");
-  else Serial.println("Turn left");
   
 }
 

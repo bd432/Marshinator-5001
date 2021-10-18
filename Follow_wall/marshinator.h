@@ -8,9 +8,9 @@
 
 // Program constants
 #define delta_t 0.2 // s
-#define upper_wall_bound 40
-#define lower_wall_bound 10
-#define drive_speed 150
+#define upper_wall_bound 15
+#define lower_wall_bound 5
+#define drive_speed 255
 
 
 
@@ -45,3 +45,5 @@ double calc_finite_difference(track_t list, double dt);
 double calc_average(track_t list, int N);
 void turn_and_pulse(bool turn_right);
 double read_shortIR(int average_count);
+
+double average_value(int average_count);
