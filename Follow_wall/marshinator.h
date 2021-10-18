@@ -10,7 +10,7 @@
 #define delta_t 0.2 // s
 #define upper_wall_bound 40
 #define lower_wall_bound 10
-#define drive_speed 255
+#define drive_speed 150
 
 
 
@@ -39,10 +39,9 @@ extern track_t ultrasound_list;
 // Function Prototypes
 void setup_motors(void);
 void setup_sensors(void);
-long read_ultrasound(void);
+double read_ultrasound(int N);
 void set_drive(driving_state_t state, int d_speed);
 double calc_finite_difference(track_t list, double dt);
 double calc_average(track_t list, int N);
 void turn_and_pulse(bool turn_right);
-double read_shortIR(void);
-double IR_average_value(int average_count);
+double read_shortIR(int average_count);
