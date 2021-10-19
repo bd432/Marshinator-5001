@@ -43,7 +43,7 @@ extern track_t ultrasound_1_list, ultrasound_2_list;
 double calc_finite_difference(track_t list, double dt);
 double calc_average(track_t list, int N);
 void turn_and_pulse(bool turn_right);
-void reset_after_turn(int N)
+void reset_after_turn(int N);
 
 //Motor
 void setup_motors(void);

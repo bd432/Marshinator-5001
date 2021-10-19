@@ -1,15 +1,20 @@
 #include "marshinator.h"
 
-// Follow around the wall clockwise
+// Follow around the wall clockwise]
+
+// Uncomment lines with ultrasound_2_list when connected up
 
 // List 1: Left US sensor
 // List 2: Front US sensor
 track_t ultrasound_1_list, ultrasound_2_list;
 
 void setup() {
-  Serial.begin(9600);           // set up Serial library at 9600 bps
-  Serial.println("Initialise program");
-  
+  pinMode(NINA_RESETN, OUTPUT);         
+  digitalWrite(NINA_RESETN, LOW);  
+
+  Serial.begin(9600);  // set up Serial library at 9600 bps
+  Serial.println("Initialise program");  
+  SerialNina.begin(115200);
 
   setup_sensors();
   setup_motors();
@@ -22,35 +27,42 @@ void setup() {
 
 void loop(){
 
+if (SerialNina.available()){
+    char serial_in = SerialNina.read();
+    Serial.println(serial_in);
+    if(serial_in == '0'){
+      Serial.println("Terminate program");
+      exit(0);
+    }
+  }
 
   // Reads left ultrasonic output and adds to the list if the robot not anaomolous (travelling < 1 m/s) - otherwise repeats previous reading
   double ultra_Op = read_ultrasound(1,20);
   double derivative = (ultra_Op - ultrasound_1_list.fetch(0))/delta_t;
-  if (ultrasound_1_list.n == 0 || abs(der) < 100) ultrasound_1_list.add(ultra_Op);
+  if (ultrasound_1_list.n == 0 || abs(derivative) < 100) ultrasound_1_list.add(ultra_Op);
   else ultrasound_1_list.add(ultrasound_1_list.fetch(0));
 
   // Reads front ultrasonic output and adds it to list
-  ultrasound_2_list.add(read_ultrasound(2,20));
+  //ultrasound_2_list.add(read_ultrasound(2,20));
 
   // Execute right turn if close to the end wall
-  if(ultrasound_2_list.fetch(0) < 6) corner_turn();
+  //if(ultrasound_2_list.fetch(0) < 6) corner_turn();
   
   // Check if within bounds and moving in the right direction -- Correct if otherwise
   if (ultrasound_1_list.n >= 4){
     derivative = calc_finite_difference(ultrasound_1_list, delta_t);
 
     // Calls turn and pulse function if out of bounds and moving away
-    if (derivative >= 0.0 && ultrasound_list.fetch(0) > upper_wall_bound) turn_and_pulse(false);
-    else if (derivative <= 0.0 && ultrasound_list.fetch(0) < lower_wall_bound) turn_and_pulse(true);
+    if (derivative >= 0.0 && ultrasound_1_list.fetch(0) > upper_wall_bound) turn_and_pulse(false);
+    else if (derivative <= 0.0 && ultrasound_1_list.fetch(0) < lower_wall_bound) turn_and_pulse(true);
   }
 
   //Print of distance/derivative values
   Serial.print("Derivative - ");
-  Serial.print(der);
+  Serial.print(derivative);
   Serial.print(" - Distance - ");
   Serial.println(ultrasound_1_list.fetch(0)); 
   
-
   double IR_Op = read_shortIR(20);
 
   Serial.print("Short IR - ");
@@ -58,8 +70,6 @@ void loop(){
   delay(1000 * delta_t);
 
 }
-
-
 
 double calc_finite_difference(track_t list, double dt){ // dt in s
 
@@ -103,7 +113,7 @@ void corner_turn(void){
   set_drive(d_state, drive_speed);
   //Edit for 90 degree turn
   delay(500);
-  reset_after_turn(int N);
+  reset_after_turn(4);
 }
 
 void reset_after_turn(int N){
@@ -112,11 +122,7 @@ void reset_after_turn(int N){
    for (int i = 0; i < N; i++){
    delay(delta_t);
    ultrasound_1_list.add(read_ultrasound(1,20));
-   ultrasound_1_list.add(read_ultrasound(2,20));
+   //ultrasound_2_list.add(read_ultrasound(2,20));
   }  
 }
 
-
-  
- 
-  
