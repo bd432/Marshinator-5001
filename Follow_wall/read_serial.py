@@ -12,7 +12,7 @@ print("Start program")
 
 
 # Parameters
-x_len = 50         # Number of points to display
+x_len = 50         # Number of points to displayxxxxxxxxxxxx
 y_range = [0, 30]  # Range of possible Y values to display
 # Create figure for plotting
 fig = plt.figure()

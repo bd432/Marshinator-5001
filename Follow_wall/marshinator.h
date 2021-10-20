@@ -9,9 +9,9 @@
 #define shortIRPin A2 
 
 // Program constants
-#define delta_t 0.2 // s
+#define delta_t 0.05 // s
 #define upper_wall_bound 15
-#define lower_wall_bound 5
+#define lower_wall_bound 10
 #define drive_speed 200
 
 
