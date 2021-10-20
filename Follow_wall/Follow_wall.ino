@@ -20,7 +20,7 @@ void setup() {
   setup_motors();
 
   //Initial drive state
-  driving_state_t initial_dr = STATIONARY;
+  driving_state_t initial_dr = FORWARDS;
   set_drive(initial_dr , drive_speed);
 }
 
@@ -108,7 +108,7 @@ void turn_and_pulse(bool turn_right){
   if (turn_right) d_state = RIGHT;
   else d_state = LEFT;
   set_drive(d_state, drive_speed);
-  delay(200); // turning time for experimentation
+  delay(300); // turning time for experimentation
   //Reset
   reset_after_turn(4);
 }
@@ -130,4 +130,3 @@ void reset_after_turn(int N){
    ultrasound_2_list.add(read_ultrasound(2,20));
   }  
 }
-

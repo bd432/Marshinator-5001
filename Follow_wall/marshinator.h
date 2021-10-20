@@ -5,14 +5,15 @@
 #define trigPin1 0
 #define echoPin1 A0
 #define trigPin2 1
-#define echoPin2 A1
-#define shortIRPin A2 
+#define echoPin2 A2
+#define shortIRPin A1
 
 // Program constants
 #define delta_t 0.05 // s
 #define upper_wall_bound 15
 #define lower_wall_bound 10
 #define drive_speed 200
+#define turn_scale_factor 0 //this needs to be tested and defined
 
 
 
@@ -45,9 +46,13 @@ double calc_average(track_t list, int N);
 void turn_and_pulse(bool turn_right);
 void reset_after_turn(int N);
 
-//Motor
+//Motor Test
 void setup_motors(void);
 void set_drive(driving_state_t state, int d_speed);
+
+//Drive
+void turn_right(double angle);
+void turn_left(double angle);
 
 //Sensors
 void setup_sensors(void);
