@@ -2,18 +2,19 @@
 
 const int trigPin = 0;
 const int echoPin = A0;
-long duration;
-int distanceCm, distanceInch;
+double duration;
+double distanceCm, distanceInch;
 double IROutput;
 
 void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   Serial.begin(9600);
+  Serial.println("Initiate program");
 
 }
 void loop() {
-  //Ultrasonic
+  // Ultrasonic test
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
@@ -21,8 +22,13 @@ void loop() {
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
   distanceCm = duration * 0.0340 / 2;
-  Serial.print(distanceCm);
-  Serial.println(" cm");
+
+  Serial.print("Py ");
+  Serial.println(distanceCm);
+  //Serial.print("Duration - ");
+  //Serial.println(duration);
+  //Serial.print(distanceCm);
+  //Serial.println(" cm");
 
 
   //IR sensor
@@ -30,5 +36,5 @@ void loop() {
   //Serial.print("IR - ");
   //println(29.988 * pow( IROutput * 5.0/ 1023.0 ,-1.173));
   //Serial.println(IROutput);
-  delay(250);
+  delay(100);
 }

@@ -5,14 +5,14 @@
 #define trigPin1 0
 #define echoPin1 A0
 #define trigPin2 1
-#define echoPin2 A2
-#define shortIRPin A1
+#define echoPin2 A1
+#define shortIRPin A2 
 
 // Program constants
 #define delta_t 0.2 // s
 #define upper_wall_bound 15
 #define lower_wall_bound 5
-#define drive_speed 255
+#define drive_speed 200
 
 
 
