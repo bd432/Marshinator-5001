@@ -5,11 +5,11 @@
 #define trigPin1 0
 #define echoPin1 A0
 #define trigPin2 1
-#define echoPin2 A2
-#define shortIRPin A1
+#define echoPin2 A1
+#define shortIRPin A2
 
 // Program constants
-#define delta_t 0.05 // s
+#define delta_t 0.1// s
 #define upper_wall_bound 15
 #define lower_wall_bound 10
 #define drive_speed 200
@@ -40,11 +40,12 @@ enum driving_state_t { STATIONARY = 0, FORWARDS = 1, BACKWARDS = 2, RIGHT = 3, L
 extern track_t ultrasound_1_list, ultrasound_2_list;
 
 // Function Prototypes
-//Main
+//Follow wall
 double calc_finite_difference(track_t list, double dt);
 double calc_average(track_t list, int N);
 void turn_and_pulse(bool turn_right);
 void reset_after_turn(int N);
+void follow_wall(int wall_no);
 
 //Motor Test
 void setup_motors(void);

@@ -17,12 +17,12 @@ double read_ultrasound(int sensor_no,int N) {
   
   // Sensor input -- 1: Left; 2: Front;
   if(sensor_no == 1){
-    Serial.println("Read US 1");
+    //Serial.println("Read US 1");
     trigPin = trigPin1;
     echoPin = echoPin1;
   }
   else {
-    Serial.println("Read US 2");
+    //Serial.println("Read US 2");
     trigPin = trigPin2;
     echoPin = echoPin2;
   }
@@ -35,10 +35,9 @@ double read_ultrasound(int sensor_no,int N) {
 	  digitalWrite(trigPin, LOW);
 	  distance =  pulseIn(echoPin, HIGH) * 0.0340 / 2.0;
     sum += distance;
-    delay(1);
+    delay(10);
   }
-  if( sensor_no == 2) Serial.println("US 2 read correctly");
-  else Serial.println("US 1 read correctly");
+ 
 	return sum/N;
 }
 
