@@ -1,8 +1,5 @@
 #include "marshinator.h"
 
-// Follow around the wall clockwise]
-
-// Uncomment lines with ultrasound_2_list when connected up
 
 // List 1: Left US sensor
 // List 2: Front US sensor

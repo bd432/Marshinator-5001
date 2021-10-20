@@ -48,7 +48,6 @@ void turn_and_pulse(bool turn_right){
 
   if(turn_right) Serial.println("Turn right");
   else Serial.println("Turn left");
-  Serial.print("Distance - ");
   Serial.println(ultrasound_1_list.fetch(0)); 
 
   //Turn robot
@@ -61,6 +60,11 @@ void turn_and_pulse(bool turn_right){
 }
 
 void follow_wall(int wall_no){
+
+  // List 1: Left US sensor
+  // List 2: Front US sensor
+  track_t ultrasound_1_list, ultrasound_2_list;
+  
   int i = 0;
   while (i < 2){
     Serial.println("Loop");
