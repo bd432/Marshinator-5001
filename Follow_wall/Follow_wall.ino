@@ -9,12 +9,12 @@
 track_t ultrasound_1_list, ultrasound_2_list;
 
 void setup() {
-  pinMode(NINA_RESETN, OUTPUT);         
-  digitalWrite(NINA_RESETN, LOW);  
+  //pinMode(NINA_RESETN, OUTPUT);         
+  //digitalWrite(NINA_RESETN, LOW);  
 
   Serial.begin(9600);  // set up Serial library at 9600 bps
   Serial.println("Initialise program");  
-  SerialNina.begin(115200);
+  //SerialNina.begin(115200);
 
   setup_sensors();
   setup_motors();
@@ -26,21 +26,24 @@ void setup() {
 
 
 void loop(){
+ Serial.println("Loop");
 
-if (SerialNina.available()){
+/*if (SerialNina.available()){
     char serial_in = SerialNina.read();
     Serial.println(serial_in);
     if(serial_in == '0'){
       Serial.println("Terminate program");
       exit(0);
     }
-  }
+  }*/
 
   // Reads left ultrasonic output and adds to the list if the robot not anaomolous (travelling < 1 m/s) - otherwise repeats previous reading
   double ultra_Op = read_ultrasound(1,20);
   double derivative = (ultra_Op - ultrasound_1_list.fetch(0))/delta_t;
   if (ultrasound_1_list.n == 0 || abs(derivative) < 100) ultrasound_1_list.add(ultra_Op);
   else ultrasound_1_list.add(ultrasound_1_list.fetch(0));
+  Serial.print("Py ");
+  Serial.println(ultrasound_1_list.fetch(0));
 
   // Reads front ultrasonic output and adds it to list
   ultrasound_2_list.add(read_ultrasound(2,20));
@@ -62,6 +65,8 @@ if (SerialNina.available()){
   Serial.print(derivative);
   Serial.print(" - Distance - ");
   Serial.println(ultrasound_1_list.fetch(0)); 
+  //Serial.print(" - Front - ");
+  //Serial.println(ultrasound_2_list.fetch(0));
   
   double IR_Op = read_shortIR(20);
 
