@@ -20,7 +20,7 @@ void setup() {
   setup_motors();
 
   //Initial drive state
-  driving_state_t initial_dr = STATIONARY;
+  driving_state_t initial_dr = FORWARDS;
   set_drive(initial_dr , drive_speed);
 }
 
@@ -43,10 +43,10 @@ if (SerialNina.available()){
   else ultrasound_1_list.add(ultrasound_1_list.fetch(0));
 
   // Reads front ultrasonic output and adds it to list
-  //ultrasound_2_list.add(read_ultrasound(2,20));
+  ultrasound_2_list.add(read_ultrasound(2,20));
 
   // Execute right turn if close to the end wall
-  //if(ultrasound_2_list.fetch(0) < 6) corner_turn();
+  if(ultrasound_2_list.fetch(0) < 6) corner_turn();
   
   // Check if within bounds and moving in the right direction -- Correct if otherwise
   if (ultrasound_1_list.n >= 4){
@@ -103,7 +103,7 @@ void turn_and_pulse(bool turn_right){
   if (turn_right) d_state = RIGHT;
   else d_state = LEFT;
   set_drive(d_state, drive_speed);
-  delay(200); // turning time for experimentation
+  delay(300); // turning time for experimentation
   //Reset
   reset_after_turn(4);
 }
@@ -112,7 +112,7 @@ void corner_turn(void){
   driving_state_t d_state = RIGHT;
   set_drive(d_state, drive_speed);
   //Edit for 90 degree turn
-  delay(500);
+  delay(1000);
   reset_after_turn(4);
 }
 
@@ -122,7 +122,6 @@ void reset_after_turn(int N){
    for (int i = 0; i < N; i++){
    delay(delta_t);
    ultrasound_1_list.add(read_ultrasound(1,20));
-   //ultrasound_2_list.add(read_ultrasound(2,20));
+   ultrasound_2_list.add(read_ultrasound(2,20));
   }  
 }
-

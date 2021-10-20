@@ -12,7 +12,8 @@
 #define delta_t 0.2 // s
 #define upper_wall_bound 15
 #define lower_wall_bound 5
-#define drive_speed 255
+#define drive_speed 200
+#define turn_scale_factor 0 //this needs to be tested and defined
 
 
 
@@ -45,9 +46,13 @@ double calc_average(track_t list, int N);
 void turn_and_pulse(bool turn_right);
 void reset_after_turn(int N);
 
-//Motor
+//Motor Test
 void setup_motors(void);
 void set_drive(driving_state_t state, int d_speed);
+
+//Drive
+void turn_right(double angle);
+void turn_left(double angle);
 
 //Sensors
 void setup_sensors(void);
