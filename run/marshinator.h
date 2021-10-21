@@ -63,3 +63,11 @@ void turn_left(double angle);
 void setup_sensors(void);
 double read_ultrasound(int sensor_no,int N);
 double read_shortIR(int average_count);
+
+//Radar
+bool block_scan(double polar_coor[]);
+void scan_radar(double list[]);
+void differentiate(double list[], double output[], double dx, int N);
+void scan_peaks(double peaks[][3], double der[], int N, double threshold);
+bool detect_blocks(double peaks[][3], double blocks[][2], double data[]);
+void select_block(double polar_coor[]);

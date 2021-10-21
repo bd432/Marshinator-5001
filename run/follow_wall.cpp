@@ -1,6 +1,7 @@
-#include "marshinator.h"
 #include <Arduino.h>
 #include <Adafruit_MotorShield.h>
+#include "marshinator.h"
+
 
 double calc_finite_difference(sensor_list_t list, double dt){ // dt in s
 
@@ -18,7 +19,7 @@ double calc_average(sensor_list_t list, int N){
   // Calculates average from last N points
   if (list.n < N) return 0;
   double average = 0.0;
-  for(int i = 0; i++; i < N) average += list.fetch(i);
+  for(int i = 0; i < N;i++) average += list.fetch(i);
   average = average/N;
   return average;
 }

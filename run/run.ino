@@ -4,6 +4,8 @@
 // List 1: Left US sensor
 // List 2: Front US sensor
 
+sensor_list_t ultrasound_1_list, ultrasound_2_list;
+
 void setup() {
   //pinMode(NINA_RESETN, OUTPUT);         
   //digitalWrite(NINA_RESETN, LOW);  

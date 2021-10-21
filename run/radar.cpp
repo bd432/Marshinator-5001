@@ -1,7 +1,7 @@
-//#include "marshinator.h"
+#include "marshinator.h"
 #include <Arduino.h>
 #include <Adafruit_MotorShield.h>
-#include <Servo.h>
+//#include <Servo.h>
 
 
 
@@ -19,16 +19,16 @@ bool block_scan(double polar_coor[]){
   scan_radar(radar_data);
   
   // Differentiate radar data
-  differentiate(radar_data, radar_data_der, radar_N);
+  differentiate(radar_data, radar_data_der, angular_res, radar_N);
 
   
 
   // Scan for peaks
   scan_peaks(peaks, radar_data_der, radar_N, threshold);
 
-  detected = detect_blocks(peaks, blocks), radar_data;
+  detected = detect_blocks(peaks, blocks, radar_data);
 
-  select_block(polar_coor);
+  if(detected) select_block(polar_coor);
 
   return detected;
 }
@@ -46,7 +46,7 @@ void differentiate(double list[], double output[], double dx, int N){
 
 }
 
-void scan_peaks(double peaks[][], double der[], int N, double threshold){
+void scan_peaks(double peaks[][3], double der[], int N, double threshold){
   int i = 0, peak_state = 0, peak_start = 0, peak_length = 0, peak_no = 0;
 
   // Store peak as [start, length, type]
@@ -111,14 +111,14 @@ void scan_peaks(double peaks[][], double der[], int N, double threshold){
 }
 
 
-bool detect_blocks(double peaks[][], double blocks[][], double data[]{
+bool detect_blocks(double peaks[][3], double blocks[][2], double data[]){
   //Return false if no blocks present
   if (peaks[0][2] == 0) return false;
 
   // Store peak as [start, length, type]
   // Type; +1 :rising; -1 :falling
 
-  double r, angle;
+  double r, theta;
   int block_start, block_end, block_no = 0;
 
   for (int i = 0; i < radar_N-1; i++){
@@ -142,10 +142,8 @@ bool detect_blocks(double peaks[][], double blocks[][], double data[]{
     }
   }
 }
-
-void select_block(){
-
-
 }
 
+void select_block(double polar_coor[]){
+  delay(10);
 }
