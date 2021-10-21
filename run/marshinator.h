@@ -37,15 +37,6 @@ class sensor_list_t {
     double pos[100];  
 };
 
-class radar_data_t{
-  public:
-    unsigned short N;
-    double angular_res;
-    double angle_start;
-    double data[N];
-
-
-}
 
 enum driving_state_t { STATIONARY = 0, FORWARDS = 1, BACKWARDS = 2, RIGHT = 3, LEFT = 4};
 

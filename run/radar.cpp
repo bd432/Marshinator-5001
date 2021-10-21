@@ -1,4 +1,4 @@
-#include "marshinator.h"
+//#include "marshinator.h"
 #include <Arduino.h>
 #include <Adafruit_MotorShield.h>
 #include <Servo.h>
@@ -13,8 +13,8 @@ bool block_scan(double polar_coor[]){
   bool detected;
 
   // Reset lists
-  for(int i=0; i <radar_N; i++ ){for(int j=0; j<3;j++) peaks[i][j] = 0}
-  for(int i=0; i <radar_N; i++ ){for(int j=0; j<2;j++) blocks[i][j] = 0}
+  for(int i=0; i <radar_N; i++ ){for(int j=0; j<3;j++) peaks[i][j] = 0;}
+  for(int i=0; i <radar_N; i++ ){for(int j=0; j<2;j++) blocks[i][j] = 0;}
 
   scan_radar(radar_data);
   

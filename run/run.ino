@@ -27,6 +27,6 @@ void loop(){
  //following this there should soon be a delay and then the robot stops and scans for the blocks
  delay(1000);
  driving_state_t d_state = STATIONARY;
- set_drive(d_state);
+ set_drive(d_state, drive_speed);
  delay(100000);
 }
