@@ -52,11 +52,9 @@ void turn_and_pulse(bool turn_right){
   //Turn robot by an angle of 20 degrees to correct path
   if (turn_right){
     turn_and_check_right(20, 0.1);
-    Serial.println("Turn Right");
   }
   else
   turn_and_check_left(20, 0.1);
-  Serial.println("Turn Left")
   //Reset
   reset_after_turn(4);
 }

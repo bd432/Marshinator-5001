@@ -4,7 +4,6 @@
 // List 2: Front US sensor
 
 sensor_list_t ultrasound_1_list, ultrasound_2_list;
-//previousMillis = 0;
 
 void setup() {
   //pinMode(NINA_RESETN, OUTPUT);         

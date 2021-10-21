@@ -24,4 +24,5 @@ void LED_check(void){
 
 void setup_LED(void){
   ledState = 0;
+  previousMillis = 0;
 }
