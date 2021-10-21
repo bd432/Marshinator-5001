@@ -1,4 +1,5 @@
-int ir_sensor = A1;
+int ir_sensor = A2;
+
 void setup() {
 //initialize serial communications at 9600 bps
 Serial.begin(9600);
@@ -7,7 +8,7 @@ void loop() {
   //double distance = round(0.1*average_value(100))*10; //loop 100 times and get its average
   Serial.print("Py ");
   Serial.println(average_value(100)); //print the sensor value
-  delay(100); //delay 500ms (0.5 second)
+  delay(100); 
 }
 
 double average_value(int average_count) {

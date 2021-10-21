@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include <Adafruit_MotorShield.h>
 
-double calc_finite_difference(track_t list, double dt){ // dt in s
+double calc_finite_difference(sensor_list_t list, double dt){ // dt in s
 
   // Calculates a  derivative using previous 4 points
   if (list.n < 4) return 0;
@@ -13,7 +13,7 @@ double calc_finite_difference(track_t list, double dt){ // dt in s
 }
 
 
-double calc_average(track_t list, int N){
+double calc_average(sensor_list_t list, int N){
   
   // Calculates average from last N points
   if (list.n < N) return 0;
@@ -63,7 +63,7 @@ void follow_wall(int wall_no){
 
   // List 1: Left US sensor
   // List 2: Front US sensor
-  track_t ultrasound_1_list, ultrasound_2_list;
+  sensor_list_t ultrasound_1_list, ultrasound_2_list;
   
   int i = 0;
   while (i < 2){
