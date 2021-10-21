@@ -3,7 +3,6 @@
 
 // List 1: Left US sensor
 // List 2: Front US sensor
-track_t ultrasound_1_list, ultrasound_2_list;
 
 void setup() {
   //pinMode(NINA_RESETN, OUTPUT);         
@@ -28,5 +27,6 @@ void loop(){
  //following this there should soon be a delay and then the robot stops and scans for the blocks
  delay(1000);
  driving_state_t d_state = STATIONARY;
+ set_drive(d_state);
  delay(100000);
 }
