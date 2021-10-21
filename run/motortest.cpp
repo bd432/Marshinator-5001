@@ -1,6 +1,7 @@
 #include "marshinator.h"
 #include <Arduino.h>
 #include <Adafruit_MotorShield.h>
+#include <Servo.h>
 
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 
@@ -18,6 +19,7 @@ void setup_motors(void){
     Motor2->setSpeed(drive_speed);
     Motor1->run(RELEASE);
     Motor2->run(RELEASE);
+    servo.attach(9);   
 }
 
 void set_drive(driving_state_t state, int d_speed){

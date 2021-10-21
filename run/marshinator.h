@@ -1,5 +1,5 @@
 #include <Arduino.h>
-//#include <Adafruit_MotorShield.h>
+#include <Servo.h>
 
 // Pin i/o ports
 #define trigPin1 0
@@ -42,6 +42,7 @@ enum driving_state_t { STATIONARY = 0, FORWARDS = 1, BACKWARDS = 2, RIGHT = 3, L
 
 // Declare global variables in all files
 extern sensor_list_t ultrasound_1_list, ultrasound_2_list;
+extern Servo servo;
 
 // Function Prototypes
 //Follow wall
