@@ -29,6 +29,7 @@ void reset_after_turn(int N){
    driving_state_t d_state = FORWARDS;
    set_drive(d_state, drive_speed);
    for (int i = 0; i < N; i++){
+   LED_check();
    delay(delta_t);
    ultrasound_1_list.add(read_ultrasound(1,20));
    ultrasound_2_list.add(read_ultrasound(2,20));
@@ -37,10 +38,7 @@ void reset_after_turn(int N){
 
 
 void corner_turn(void){
-  driving_state_t d_state = RIGHT;
-  set_drive(d_state, drive_speed);
-  //Edit for 90 degree turn
-  delay(1000);
+  turn_and_check_right(90, 0.1);
   reset_after_turn(4);
 }
 
@@ -51,11 +49,14 @@ void turn_and_pulse(bool turn_right){
   else Serial.println("Turn left");
   Serial.println(ultrasound_1_list.fetch(0)); 
 
-  //Turn robot
-  if (turn_right) d_state = RIGHT;
-  else d_state = LEFT;
-  set_drive(d_state, drive_speed);
-  delay(300); // turning time for experimentation
+  //Turn robot by an angle of 20 degrees to correct path
+  if (turn_right){
+    turn_and_check_right(20, 0.1);
+    Serial.println("Turn Right");
+  }
+  else
+  turn_and_check_left(20, 0.1);
+  Serial.println("Turn Left")
   //Reset
   reset_after_turn(4);
 }
@@ -84,8 +85,9 @@ void follow_wall(int wall_no){
   double derivative = (ultra_Op - ultrasound_1_list.fetch(0))/delta_t;
   if (ultrasound_1_list.n == 0 || abs(derivative) < 100) ultrasound_1_list.add(ultra_Op);
   else ultrasound_1_list.add(ultrasound_1_list.fetch(0));
+  LED_check();
 
-  delay(100 * delta_t);
+  //delay(100 * delta_t); didnt realise this was in here will try running without before deleting
 
 
   // Reads front ultrasonic output and adds it to list
@@ -115,6 +117,7 @@ void follow_wall(int wall_no){
   Serial.print(" - Front - ");
   Serial.println(ultrasound_2_list.fetch(0));
   delay(1000 * delta_t);
+  LED_check(); //checks if LED needs to be flashed before moving to next iteration
 
 }
 }

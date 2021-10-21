@@ -2,12 +2,13 @@
 #include <Arduino.h>
 
 
-void setup_sensors(void){
+void setup_pins(void){
   pinMode(trigPin1, OUTPUT);
   pinMode(echoPin1, INPUT);
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
   pinMode(shortIRPin, OUTPUT);
+  pinMode(LED_Pin, OUTPUT);
 }
   
 //Read Ultrasound sensor

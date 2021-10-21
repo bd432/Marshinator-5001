@@ -7,13 +7,15 @@
 #define trigPin2 1
 #define echoPin2 A1
 #define shortIRPin A2
+#define LED_Pin 10
 
 // Program constants
-#define delta_t 0.1// s
+#define delta_t 0.05// s
 #define upper_wall_bound 15
 #define lower_wall_bound 10
 #define drive_speed 200
 #define turn_scale_factor 0 //this needs to be tested and defined
+#define LED_interval 500 //ms
 
 // Radar variables
 #define radar_N 90
@@ -37,12 +39,17 @@ class sensor_list_t {
     double pos[100];  
 };
 
-
+//Driving state variable to store the state the motors are in
 enum driving_state_t { STATIONARY = 0, FORWARDS = 1, BACKWARDS = 2, RIGHT = 3, LEFT = 4};
 
 // Declare global variables in all files
 extern sensor_list_t ultrasound_1_list, ultrasound_2_list;
 extern Servo servo;
+
+//LED variables
+unsigned long currentMillis;  //stores current time when doing LED check
+unsigned long previousMillis; //stores time that the LED previously blinked
+int ledState; //stores the state of the LED
 
 // Function Prototypes
 //Follow wall
@@ -52,6 +59,10 @@ void turn_and_pulse(bool turn_right);
 void reset_after_turn(int N);
 void follow_wall(int wall_no);
 
+//LED
+void setup_LED(void);
+void LED_check(void);
+
 //Motor Test
 void setup_motors(void);
 void set_drive(driving_state_t state, int d_speed);
@@ -59,9 +70,12 @@ void set_drive(driving_state_t state, int d_speed);
 //Drive
 void turn_right(double angle);
 void turn_left(double angle);
+void turn_and_check_right(double angle, double angular_resolution);
+void turn_and_check_left(double angle, double angular_resolution);
+void drive_with_LED(unsigned long duration, double resolution, driving_state_t d_state);
 
 //Sensors
-void setup_sensors(void);
+void setup_pins(void);
 double read_ultrasound(int sensor_no,int N);
 double read_shortIR(int average_count);
 
