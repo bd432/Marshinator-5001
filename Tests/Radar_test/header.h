@@ -16,9 +16,9 @@
 #define turn_scale_factor 0 //this needs to be tested and defined
 
 // Radar variables
-#define radar_N 90
+#define radar_N 120
 #define angular_res 1 // degrees
-#define start_angle 45
+#define start_angle 60
 
 extern Servo servo;
 

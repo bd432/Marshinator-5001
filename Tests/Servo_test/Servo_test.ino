@@ -30,13 +30,12 @@ void loop() {
   Serial.println("2");
   delay(250);
   */
-  for (int i = 0; i < 90; i++){
-  Serial.println(i);
-  //servo_test.write(0);
-  //delay(250);
-  servo_test.write(180-i);
-  delay(30);
+  for (int i = 20; i < 180; i++){
+    servo_test.write(i);
+    Serial.println(i);
+    delay(30);
   }
+
 
 
 }

@@ -5,11 +5,13 @@
 
 Servo servo;    
 
-
 bool block_scan(double polar_coor[]){
   // Return relative polar coor of block
+
+  Serial.println("Call radar");
+
   static double radar_data[radar_N], radar_data_der[radar_N-1], peaks[radar_N][3], blocks[radar_N][2];
-  double threshold = 100; // Edit threshold depending on data
+  double threshold = 10; // Edit threshold depending on data
   bool detected;
 
   // Reset lists
@@ -17,9 +19,18 @@ bool block_scan(double polar_coor[]){
   for(int i=0; i <radar_N; i++ ){for(int j=0; j<2;j++) blocks[i][j] = 0;}
 
   scan_radar(radar_data);
+
+   
   
   // Differentiate radar data
   differentiate(radar_data, radar_data_der, angular_res, radar_N);
+
+  for (int i = 0; i < radar_N-1; i++){
+    Serial.print("R - ");
+    Serial.println(radar_data[i]);
+    Serial.print("Theta - ");
+    Serial.println(90-start_angle + i * angular_res);
+  }
 
   
 
@@ -36,15 +47,19 @@ bool block_scan(double polar_coor[]){
 void scan_radar(double list[]){
   // Scan and fill array
   servo.write(90-start_angle);
-  delay(250);
+  delay(2000);
   double angle;
   for (int i =0; i < radar_N ; i++){
     angle = 90-start_angle + i * angular_res;
     servo.write(angle);
-    list[i] = read_shortIR(50);
-    delay(30);
+    delay(80);
+    list[i] = read_shortIR(10);
+    Serial.print("I - ");
+    Serial.print(i);
+    Serial.print(" - Live - ");
+    Serial.println(list[i]);
+    
   }
-
 }
 
 void differentiate(double list[], double output[], double dx, int N){
@@ -52,7 +67,6 @@ void differentiate(double list[], double output[], double dx, int N){
   output[0] = (list[1]-list[0])/dx;
   for (int i = 1; i < N-2; i++) output[i] = (list[i+1]-list[i-1])/(2.0 * dx);
   output[N-2] = (list[N-1] - list[N-2])/dx;
-
 }
 
 void scan_peaks(double peaks[][3], double der[], int N, double threshold){
