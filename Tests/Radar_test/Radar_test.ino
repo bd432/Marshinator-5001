@@ -6,7 +6,7 @@ char serial_in;
 
 void setup() {
 
-  Serial.begin(9600);  // set up Serial library at 9600 bps
+  Serial.begin(4800);  // set up Serial library at 9600 bps
   Serial.println("Initialise program");  
 
   setup_sensors();
@@ -37,10 +37,5 @@ void loop(){
     }
   }
 
-
-  Serial.println(" ");
-
-
-
-  
+  //Serial.println(" ");
 }

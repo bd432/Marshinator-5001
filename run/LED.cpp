@@ -1,6 +1,11 @@
 #include "marshinator.h"
 #include <Arduino.h>
 
+
+unsigned long currentMillis;
+unsigned long previousMillis;
+int ledState;
+
 //Function that checks how long since the LED has last blinked and flashes it if necessary
 void LED_check(void){
   const long interval = LED_interval;

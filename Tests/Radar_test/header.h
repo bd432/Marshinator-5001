@@ -16,9 +16,11 @@
 #define turn_scale_factor 0 //this needs to be tested and defined
 
 // Radar variables
-#define radar_N 120
-#define angular_res 1 // degrees
-#define start_angle 60
+#define radar_N 180
+#define angular_res 0.5 // degrees
+#define start_angle 30
+#define peaks_N 20
+#define blocks_N 10
 
 extern Servo servo;
 
@@ -31,8 +33,10 @@ double read_shortIR(int average_count);
 
 //Radar
 bool block_scan(double polar_coor[]);
-void scan_radar(double list[]);
-void differentiate(double list[], double output[], double dx, int N);
-void scan_peaks(double peaks[][3], double der[], int N, double threshold);
+//void scan_radar(double list[]);
+//void calc_finite_difference(double list[], double output[], double dx, int N);
+//void scan_peaks(double peaks[][3], double cart_coor[][2], int N, double threshold);
 bool detect_blocks(double peaks[][3], double blocks[][2], double data[]);
 void select_block(double polar_coor[]);
+//void convert_cartesian(double r[], double cartesian[][2]);
+

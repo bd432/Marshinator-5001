@@ -47,9 +47,9 @@ extern sensor_list_t ultrasound_1_list, ultrasound_2_list;
 extern Servo servo;
 
 //LED variables
-unsigned long currentMillis;  //stores current time when doing LED check
-unsigned long previousMillis; //stores time that the LED previously blinked
-int ledState; //stores the state of the LED
+extern unsigned long currentMillis;  //stores current time when doing LED check
+extern unsigned long previousMillis; //stores time that the LED previously blinked
+extern int ledState; //stores the state of the LED
 
 // Function Prototypes
 //Follow wall

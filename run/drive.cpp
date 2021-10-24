@@ -57,7 +57,7 @@ void turn_and_check_left(double angle, double angular_resolution){
   
   //Loops round checking the LED while driving forwards
   //The length of each loop depends on the resolution given in ms
-  for(moving_time=0; moving_time<duration; moving_time+= resolution){
+  for(moving_time=0; moving_time < duration; moving_time+= resolution){
     set_drive(d_state, drive_speed);
     LED_check();
     delay(resolution);
