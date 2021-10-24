@@ -23,7 +23,7 @@ bool block_scan(double polar_coor[]){
   delay(2000);
   double angle;
   for (int i =0; i < radar_N ; i++){
-    angle = 90-start_angle + i * angular_res;
+    angle = 90 - start_angle + i * angular_res;
     servo.write(angle);
     delay(40);
     radar_data[i] = read_shortIR(100);
@@ -90,13 +90,13 @@ bool block_scan(double polar_coor[]){
     Serial.print(peaks[i][2]);
     Serial.print(" - Peak 2 -  ");
     Serial.println(peaks[i+1][2]);
-
+    // Check for descending / ascending peaks
     if (peaks[i][2] == -1 && peaks[i+1][2] == 1){
       Serial.println("Block triggered");
-      block_start = peaks[i][0] + peaks[i][1]+2;
+      block_start = peaks[i][0] + peaks[i][1] + 2;
       block_end = peaks[i+1][0] + 2;
 
-      theta = 90 - start_angle + angular_res * (block_start + block_end) / 2.0;
+      theta = angular_res * (block_start + block_end) / 2.0;
       r = 0;
 
       Serial.print("Start - ");
@@ -123,7 +123,7 @@ bool block_scan(double polar_coor[]){
   Serial.println("Identified blocks");
 
   // Print data
-  /*
+  
   for (int i = 0; i < radar_N; i++){
     Serial.print("R - ");
     Serial.println(radar_data[i]);
@@ -138,7 +138,6 @@ bool block_scan(double polar_coor[]){
     Serial.println(cart_coor[i][1]);
     delay(10);
   }
-  */
 
   Serial.println("Finish print");
 
@@ -203,73 +202,9 @@ void convert_cartesian(double r[], double cartesian[][2]){
 }
 
 
-void scan_peaks(double peaks[][3], double cart_coor[][2], int N, double threshold){
-
-  // Store peak as [start, length, type]
-  // Type; +1 :rising; -1 :falling
-  double dot[radar_N-2], dot_avr[radar_N-5];
-
-  for(int i = 0; i < radar_N-2; i++) dot[i] = (cart_coor[0][i+1]-cart_coor[0][i])*(cart_coor[0][i+2]-cart_coor[0][i+1]) + (cart_coor[1][i+1]-cart_coor[1][i])*(cart_coor[1][i+2]-cart_coor[1][i+1]);  
-  for(int i = 0; i < radar_N-5; i++) dot_avr[i] = (dot[i] + dot[i+1] + dot[i+2] + dot[i+3])/4.0;
-  
-  int peak_state = 0, peak_length, peak_no = 0; // Length given as relative position (peak of 1 is 0)
-
-  for(int i = 0; i < radar_N-5; i++){
-    if (peak_state != 0){
-      if (dot_avr[i] > threshold) peak_length += 1;
-      else{
-        peaks[peak_no][1] = peak_length;
-        peaks[peak_no][2] = peak_state;
-        peak_state = 0;
-        peak_no++;
-      }
-    }
-    else{
-      if (dot_avr[i] > threshold){
-        peaks[peak_no][0] = i;
-        peak_length = 0;
-        if (  (cart_coor[i+4][0] - cart_coor[i][0]) * cart_coor[i+2][0] + (cart_coor[i+4][1] - cart_coor[i][1]) * cart_coor[i+2][1] < 0) peak_state = -1;
-        else peak_state = 1;
-      }
-    }
-  }
 
 
 
-}
-
-bool detect_blocks(double peaks[][3], double blocks[][2], double data[]){
-  //Return false if no blocks present
-  if (peaks[0][2] == 0) return false;
-
-  // Store peak as [start, length, type]
-  // Type; +1 :rising; -1 :falling
-
-  double r, theta;
-  unsigned int block_start, block_end, block_no = 0;
-
-  for (int i = 0; i < radar_N-1; i++){
-    if (peaks[i+1][2] == 0){
-      if (block_no == 0) return false;
-      else return true;
-    }
-
-    if (peaks[i][2] == -1 && peaks[i+1][2] == 1){
-      block_start = peaks[i][0] + peaks[i][1];
-      block_end = peaks[i+1][0];
-
-      theta = -start_angle + angular_res * (block_start + block_end) / 2.0;
-      r = 0;
-      for (int j = block_start; j < block_end + 1; j++){ r += data[j];
-        r = r/(1 + block_end-block_start);
-
-        blocks[block_no][0] = r;
-        blocks[block_no][1] = theta;
-        block_no++;
-      }
-    }
-  }
-}
 
 void select_block(double polar_coor[]){
   delay(10);

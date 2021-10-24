@@ -73,15 +73,16 @@ while True:
         break
 
 ser.close()
-print("Len R : " + str(len(r_list)))
-print("Len theta : " + str(len(theta_list)))
-print("Len der : "+ str(len(der_list)))
+#print("Len R : " + str(len(r_list)))
+#print("Len theta : " + str(len(theta_list)))
+#print("Len der : "+ str(len(der_list)))
 
 dot_list = []
 
 for i in range(len(x_list)-2):
     dot = (x_list[i+1]-x_list[i])*(x_list[i+2]-x_list[i+1]) + (y_list[i+1]-y_list[i])*(y_list[i+2]-y_list[i+1])
     dot_list.append(dot)
+
 avr_list = []
 
 for i in range(len(dot_list)-3):
