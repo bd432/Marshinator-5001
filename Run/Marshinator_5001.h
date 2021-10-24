@@ -18,9 +18,12 @@
 #define LED_interval 500 //ms
 
 // Radar variables
-#define radar_N 90
-#define angular_res 1 // degrees
-#define start_angle 45
+#define radar_N 180
+#define angular_res 0.5 // degrees
+#define start_angle 30
+#define peaks_N 20
+#define blocks_N 10
+#define threshold 1.5
 
 
 class sensor_list_t {
@@ -80,9 +83,4 @@ double read_ultrasound(int sensor_no,int N);
 double read_shortIR(int average_count);
 
 //Radar
-bool block_scan(double polar_coor[]);
-void scan_radar(double list[]);
-void differentiate(double list[], double output[], double dx, int N);
-void scan_peaks(double peaks[][3], double der[], int N, double threshold);
-bool detect_blocks(double peaks[][3], double blocks[][2], double data[]);
-void select_block(double polar_coor[]);
+bool radar_scan(double polar_coor[]);

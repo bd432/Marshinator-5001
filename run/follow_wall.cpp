@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <Adafruit_MotorShield.h>
-#include "marshinator.h"
+#include "Marshinator_5001.h"
 
 
 double calc_finite_difference(sensor_list_t list, double dt){ // dt in s

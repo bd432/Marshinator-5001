@@ -11,7 +11,6 @@ bool block_scan(double polar_coor[]){
   Serial.println("Start radar");
 
   static double radar_data[radar_N], radar_data_der[radar_N-8], peaks[peaks_N][3], blocks[blocks_N][2], cart_coor[radar_N][2];
-  double threshold = 1.5; // Edit threshold depending on data
   bool detected;
 
   // Reset lists

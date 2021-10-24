@@ -21,6 +21,7 @@
 #define start_angle 30
 #define peaks_N 20
 #define blocks_N 10
+#define threshold 1.5
 
 extern Servo servo;
 
