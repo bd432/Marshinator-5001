@@ -8,6 +8,7 @@
 #define echoPin2 A1
 #define shortIRPin A2
 #define LED_Pin 7
+#define switchPin 6
 
 // Program constants
 #define delta_t 0.05// s
@@ -24,6 +25,7 @@
 #define peaks_N 20
 #define blocks_N 10
 #define threshold 1.5
+#define range_cutoff 40
 
 
 class sensor_list_t {
@@ -42,13 +44,15 @@ class sensor_list_t {
     double pos[100];  
 };
 
-//Driving state variable to store the state the motors are in
+//  Driving state variable to store the state the motors are in
 enum driving_state_t { STATIONARY = 0, FORWARDS = 1, BACKWARDS = 2, RIGHT = 3, LEFT = 4};
+// Robot state variables
+enum robot_state_t { IDLE = 0, MOVE_TO_BLOCKS = 1, SCAN_BLOCKS = 2, COLLECT_BLOCK = 3, IDENTIFY_BLOCK = 4, MOVE_TO_DROP = 5};
 
 // Declare global variables in all files
 extern sensor_list_t ultrasound_1_list, ultrasound_2_list;
 extern Servo servo;
-
+extern robot_state_t robot_state
 //LED variables
 extern unsigned long currentMillis;  //stores current time when doing LED check
 extern unsigned long previousMillis; //stores time that the LED previously blinked

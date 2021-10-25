@@ -16,16 +16,18 @@ bool block_scan(double polar_coor[]){
   // Reset lists
   for(int i=0; i < peaks_N; i++ ){for(int j=0; j<3;j++) peaks[i][j] = 0;}
   for(int i=0; i < blocks_N; i++ ){for(int j=0; j<2;j++) blocks[i][j] = 0;}
-  
+
   // Scan and collect data for the radar
   servo.write(90-start_angle);
   delay(2000);
-  double angle;
+  double angle, input;
   for (int i =0; i < radar_N ; i++){
     angle = 90 - start_angle + i * angular_res;
     servo.write(angle);
     delay(40);
-    radar_data[i] = read_shortIR(100);
+    input =  read_shortIR(100);
+    if (input > range_cutoff) radar_data[i] = range_cutoff;
+    else radar_data[i] = input;
   }
   Serial.println("Finish Scan");
     
@@ -110,6 +112,8 @@ bool block_scan(double polar_coor[]){
       Serial.println(r);
       Serial.print("Theta1 - ");
       Serial.println(theta);
+      Serial.print("Width1 - ");
+      Serial.println((block_end-block_start)* angular_res * r * M_PI/180.0);
 
       blocks[block_no][0] = r;
       blocks[block_no][1] = theta;

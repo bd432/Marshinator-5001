@@ -2,7 +2,6 @@ import serial
 import time
 import matplotlib.pyplot as plt
 
-
 ser = serial.Serial("COM6", 4800)
 print("Start program")
 
@@ -65,6 +64,9 @@ while True:
         print(serial_str)
         i = 0
     if serial_str[:11] == "Block no - ":
+        print(serial_str)
+        i = 0
+    if serial_str[:9] == "Width1 - ":
         print(serial_str)
         i = 0
 

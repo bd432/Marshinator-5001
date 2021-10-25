@@ -18,12 +18,14 @@ bool radar_scan(double polar_coor[]){
   // Scan and collect data for the radar
   servo.write(90-start_angle);
   delay(2000);
-  double angle;
+  double angle, input;
   for (int i =0; i < radar_N ; i++){
     angle = 90 - start_angle + i * angular_res;
     servo.write(angle);
     delay(40);
-    radar_data[i] = read_shortIR(100);
+    input =  read_shortIR(100);
+    if (input > range_cutoff) radar_data[i] = range_cutoff;
+    else radar_data[i] = input;
   }
     
   // Convert radar data to cartesian coordinates

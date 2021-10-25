@@ -9,6 +9,7 @@ void setup_pins(void){
   pinMode(echoPin2, INPUT);
   pinMode(shortIRPin, OUTPUT);
   pinMode(LED_Pin, OUTPUT);
+  pinMode(switchPin, INPUT);
 }
   
 //Read Ultrasound sensor

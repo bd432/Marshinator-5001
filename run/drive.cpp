@@ -33,7 +33,7 @@ void turn_and_check_right(double angle, double angular_resolution){
   double angle_turned = 0 ;
   for(angle_turned = 0; angle_turned < angle; angle_turned+=angular_resolution){
     
-    //turns by a small amount and checks to see if the LED needs flashing
+    // Turns by a small amount and checks to see if the LED needs flashing
     turn_right(angular_resolution, false);
     LED_check();
     }
@@ -42,7 +42,7 @@ void turn_and_check_right(double angle, double angular_resolution){
 //Function for turning left and simultaneously checking to flash the move LED
 void turn_and_check_left(double angle, double angular_resolution){
   double angle_turned = 0;
-  for(angle_turned= 0; angle_turned < angle; angle_turned+=angular_resolution){
+  for(angle_turned= 0; angle_turned < angle; angle_turned += angular_resolution){
     
     //turns by a small amount and checks to see if the LED needs flashing 
     //loops over this until the full angle has been turned
