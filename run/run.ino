@@ -25,6 +25,7 @@ void setup() {
 
 
 void loop(){
+  double polar_coor[2];
 
   switch (robot_state){
     case IDLE;
@@ -44,6 +45,9 @@ void loop(){
       robot_state = SCAN_BLOCKS;
       break;
     case SCAN_BLOCKS;
+      if (radar_scan(polar_coor)){
+        robot_state = COLLECT_BLOCK;
+      }
       break;
     case COLLECT_BLOCK;
       break;

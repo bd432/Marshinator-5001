@@ -74,6 +74,4 @@ void set_drive(int state){
       Motor2->run(FORWARD);
       break;    
   }
-
-  
 }

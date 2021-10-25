@@ -53,6 +53,7 @@ enum robot_state_t { IDLE = 0, MOVE_TO_BLOCKS = 1, SCAN_BLOCKS = 2, COLLECT_BLOC
 extern sensor_list_t ultrasound_1_list, ultrasound_2_list;
 extern Servo servo;
 extern robot_state_t robot_state
+
 //LED variables
 extern unsigned long currentMillis;  //stores current time when doing LED check
 extern unsigned long previousMillis; //stores time that the LED previously blinked
