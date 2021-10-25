@@ -59,10 +59,12 @@ void turn_and_pulse(bool turn_right){
   reset_after_turn(4);
 }
 
-void follow_wall(int wall_no){
+void follow_wall(int wall_no, unsigned long max_duration){
 
-  int i = 0;
-  while (i < 2){
+  unsigned long duration = 0;
+  unsigned long start_time = millis();
+  int corners_turned = 0;
+  while (corners_turned < wall_no and duration < max_duration){
     Serial.println("Loop");
 
     // Reads left ultrasonic output and adds to the list if the robot not anaomolous (travelling < 1 m/s) - otherwise repeats previous reading
@@ -81,7 +83,7 @@ void follow_wall(int wall_no){
     // Execute right turn if close to the end wall
     if(ultrasound_2_list.fetch(0) < 6) {
       corner_turn();
-      i += 1 ;
+      corners_turned += 1 ;
     }
   
     // Check if within bounds and moving in the right direction -- Correct if otherwise
@@ -103,6 +105,9 @@ void follow_wall(int wall_no){
     // Delay for time dt
     delay(1000 * delta_t);
     LED_check(); //checks if LED needs to be flashed before moving to next iteration
+
+    //Checks for how long follow_wall function has been running
+    duration = millis() - start_time;
 
   }
 }

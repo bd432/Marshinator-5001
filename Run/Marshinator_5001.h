@@ -8,6 +8,7 @@
 #define echoPin2 A1
 #define shortIRPin A2
 #define LED_Pin 7
+#define blockPin A3
 #define switchPin 6
 
 // Program constants
@@ -16,7 +17,15 @@
 #define lower_wall_bound 10
 #define drive_speed 200
 #define turn_scale_factor 0 //this needs to be tested and defined
+#define arm_scale_factor 0 //this needs to be tested and defined
 #define LED_interval 500 //ms
+
+//Arm Pickup Mechanism        -------- these angles must be tested and then defined later
+#define arm_motor 3
+#define descent_angle_pickup 0
+#define ascent_angle_pickup 0
+#define ascent_angle_dropoff 0
+#define descent_angle_dropoff 0
 
 // Radar variables
 #define radar_N 180
@@ -41,18 +50,19 @@ class sensor_list_t {
   private:
     const int N_MAX = 100;
     unsigned short p;
-    double pos[100];  
+    double pos[100];
 };
 
-//  Driving state variable to store the state the motors are in
+//Driving state variable to store the state the motors are in
 enum driving_state_t { STATIONARY = 0, FORWARDS = 1, BACKWARDS = 2, RIGHT = 3, LEFT = 4};
+
 // Robot state variables
 enum robot_state_t { IDLE = 0, MOVE_TO_BLOCKS = 1, SCAN_BLOCKS = 2, COLLECT_BLOCK = 3, IDENTIFY_BLOCK = 4, MOVE_TO_DROP = 5};
 
 // Declare global variables in all files
 extern sensor_list_t ultrasound_1_list, ultrasound_2_list;
 extern Servo servo;
-extern robot_state_t robot_state
+extern robot_state_t robot_state;
 
 //LED variables
 extern unsigned long currentMillis;  //stores current time when doing LED check
@@ -65,7 +75,7 @@ double calc_finite_difference(sensor_list_t list, double dt);
 double calc_average(sensor_list_t list, int N);
 void turn_and_pulse(bool turn_right);
 void reset_after_turn(int N);
-void follow_wall(int wall_no);
+void follow_wall(int wall_no, unsigned long duration);
 
 //LED
 void setup_LED(void);
@@ -86,6 +96,13 @@ void drive_with_LED(unsigned long duration, double resolution, driving_state_t d
 void setup_pins(void);
 double read_ultrasound(int sensor_no,int N);
 double read_shortIR(int average_count);
+bool sense_block(void);
+
+//Block type identification, pickup, transport
+bool block_type_detection(void);
+void arm_test (double angle1, double angle2, double angle3, double angle4);
+void block_dropoff_and_reset (double ascent_angle, double descent_angle);
+void pickup_block(double descent_angle ,double ascent_angle);
 
 //Radar
 bool radar_scan(double polar_coor[]);
