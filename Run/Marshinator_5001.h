@@ -7,7 +7,7 @@
 #define trigPin2 1
 #define echoPin2 A1
 #define shortIRPin A2
-#define LED_Pin 10
+#define LED_Pin 7
 
 // Program constants
 #define delta_t 0.05// s

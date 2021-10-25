@@ -48,8 +48,5 @@ set_drive(FORWARDS, drive_speed);
 follow_wall(2);
 
 
-
-
-
  
 }
