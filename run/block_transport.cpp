@@ -49,3 +49,7 @@ bool block_type_detection(void){
   if (block_present) return true;
   else return false;
 }
+
+bool block_detection(void){
+  // return if block detected by front line sensor
+}

@@ -24,7 +24,6 @@ double calc_average(sensor_list_t list, int N){
   return average;
 }
 
-
 void reset_after_turn(int N){
    driving_state_t d_state = FORWARDS;
    set_drive(d_state, drive_speed);
@@ -35,7 +34,6 @@ void reset_after_turn(int N){
    ultrasound_2_list.add(read_ultrasound(2,20));
   }
 }  
-
 
 void corner_turn(void){
   turn_and_check_right(90, 0.1);
@@ -95,12 +93,14 @@ void follow_wall(int wall_no, unsigned long max_duration){
     }
 
     //  Print of distance/derivative values
+    /*
     Serial.print("Derivative - ");
     Serial.print(derivative);
     Serial.print(" - Distance - ");
     Serial.println(ultrasound_1_list.fetch(0)); 
     Serial.print(" - Front - ");
     Serial.println(ultrasound_2_list.fetch(0));
+    */
     
     // Delay for time dt
     delay(1000 * delta_t);

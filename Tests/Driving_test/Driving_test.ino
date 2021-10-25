@@ -32,8 +32,7 @@ void setup() {
   // Set motors to stop
   Motor1->setSpeed(drive_speed);
   Motor2->setSpeed(drive_speed);
-  Motor1->run(RELEASE);0
-  
+  Motor1->run(RELEASE);
   Motor2->run(RELEASE);
 }
 

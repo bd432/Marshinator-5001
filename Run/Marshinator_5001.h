@@ -19,8 +19,10 @@
 #define turn_scale_factor 0 //this needs to be tested and defined
 #define arm_scale_factor 0 //this needs to be tested and defined
 #define LED_interval 500 //ms
+#define anglar_block_tolerance 10 // degrees
+#define collect_block_timout 15 // s 
 
-//Arm Pickup Mechanism        -------- these angles must be tested and then defined later
+//  Arm Pickup Mechanism        -------- these angles must be tested and then defined later
 #define arm_motor 3
 #define descent_angle_pickup 0
 #define ascent_angle_pickup 0
@@ -103,6 +105,7 @@ bool block_type_detection(void);
 void arm_test (double angle1, double angle2, double angle3, double angle4);
 void block_dropoff_and_reset (double ascent_angle, double descent_angle);
 void pickup_block(double descent_angle ,double ascent_angle);
+bool block_detection(void)
 
 //Radar
 bool radar_scan(double polar_coor[]);

@@ -4,7 +4,7 @@
 // List 2: Front US sensor
 
 sensor_list_t ultrasound_1_list, ultrasound_2_list;
-robot_state_t robot_state;
+robot_state_t robot_state = IDLE;
 
 void setup() {
   //pinMode(NINA_RESETN, OUTPUT);
@@ -25,12 +25,15 @@ void setup() {
 
 
 void loop(){
-  double polar_coor[2];
+  static double polar_coor[2];
+  static unsigned long start_time;
 
   switch (robot_state){
     case IDLE:
-      // Wait for switch to trigger program
-      if (digitalRead(switchPin)) robot_state = MOVE_TO_BLOCKS;
+      set_drive(STATIONARY, drive_speed);
+      if (digitalRead(switchPin)) {
+        robot_state = MOVE_TO_BLOCKS;
+      }
       break;
     case MOVE_TO_BLOCKS:
       //Turns to align with wall and starts driving
@@ -46,8 +49,25 @@ void loop(){
       robot_state = SCAN_BLOCKS;
       break;
     case SCAN_BLOCKS:
+      // Stop robot
+      set_drive(STATIONARY, drive_speed);
+      // Scan radar
+      if (radar_scan(polar_coor)) {
+        // Turn to block if not aligned - move to 
+        if (polar_coor[1] < anglar_block_tolerance && polar_coor[1] > -anglar_block_tolerance) {
+          robot_state = COLLECT_BLOCK;    // Calibration needed so that an angle 0 corresponds to straight ahead
+          set_drive(FORWARDS, 200); // Drive at slower speed for collecting block
+          start_time = millis(); // Reset timer for COLLECT_BLOCK
+        }
+        else if (polar_coor[1] > 0) turn_and_check_left(polar_coor[1], 0.1); 
+        else turn_and_check_right(-1 * polar_coor[1], 0.1);
+      }
+      // Rotate and repeat if no block detected
+      else turn_and_check_left(45,0.1);
       break;
     case COLLECT_BLOCK:
+      if (block_detected()) robot_state = IDENTIFY_BLOCK; // Account for radar offset
+      if (millis() - start_time > collect_block_timout * 1000) robot_state = SCAN_BLOCKS;
       break;
     case IDENTIFY_BLOCK:
       break;
@@ -56,6 +76,5 @@ void loop(){
       set_drive(FORWARDS, drive_speed);
       follow_wall(2, 1000);
       break;
-
   }
 }
