@@ -17,8 +17,8 @@
 #define upper_wall_bound 15
 #define lower_wall_bound 10
 #define drive_speed 200
-#define turn_scale_factor 0 //this needs to be tested and defined
-#define arm_scale_factor 0 //this needs to be tested and defined
+#define turn_scale_factor 14.81 
+#define arm_scale_factor 12 //this needs to be tested and defined
 #define LED_interval 500 //ms
 
 //Arm Pickup Mechanism        -------- these angles must be tested and then defined later
@@ -97,7 +97,7 @@ void drive_with_LED(unsigned long duration, double resolution, driving_state_t d
 void setup_pins(void);
 double read_ultrasound(int sensor_no,int N);
 double read_shortIR(int average_count);
-bool sense_block(void);
+bool sense_block(int N);
 
 //Block type identification, pickup, transport
 bool block_type_detection(void);

@@ -53,3 +53,16 @@ double read_shortIR(int average_count) {
   }
   return(sum/average_count);
 }
+
+bool sense_block(int N){
+  double sum = 0;
+  for(int i = 0; i > N; i++){
+    double value = analogRead(blockPin);
+    sum += value; 
+  }
+
+  double final_value = sum/N ;
+  if (final_value > 50) return true;
+  else return false;
+  
+}
