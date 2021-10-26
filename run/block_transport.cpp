@@ -45,8 +45,13 @@ void arm_test (double angle1, double angle2, double angle3, double angle4){
 // If function returns true, block contains metal
 bool block_type_detection(void){
   pickup_block(descent_angle_pickup, ascent_angle_pickup);
-  bool block_present = sense_block();
-  if (block_present) return true;
+  bool block_present = sense_block(10);
+  if (block_present) {
+    digitalWrite(blockLED_Pin, HIGH);
+    delay(500);
+    digitalWrite(moveLED_Pin, HIGH);
+    return true;
+  }
   else return false;
 }
 

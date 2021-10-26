@@ -7,7 +7,8 @@
 #define trigPin2 1
 #define echoPin2 A1
 #define shortIRPin A2
-#define LED_Pin 7
+#define moveLED_Pin 7
+#define blockLED_Pin 6
 #define blockPin A3
 #define switchPin 6
 
@@ -16,8 +17,8 @@
 #define upper_wall_bound 15
 #define lower_wall_bound 10
 #define drive_speed 200
-#define turn_scale_factor 0 //this needs to be tested and defined
-#define arm_scale_factor 0 //this needs to be tested and defined
+#define turn_scale_factor 14.81 
+#define arm_scale_factor 12 //this needs to be tested and defined
 #define LED_interval 500 //ms
 #define anglar_block_tolerance 10 // degrees
 #define collect_block_timout 15 // s 
@@ -98,7 +99,7 @@ void drive_with_LED(unsigned long duration, double resolution, driving_state_t d
 void setup_pins(void);
 double read_ultrasound(int sensor_no,int N);
 double read_shortIR(int average_count);
-bool sense_block(void);
+bool sense_block(int N);
 
 //Block type identification, pickup, transport
 bool block_type_detection(void);

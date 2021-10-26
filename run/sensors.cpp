@@ -8,7 +8,8 @@ void setup_pins(void){
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
   pinMode(shortIRPin, OUTPUT);
-  pinMode(LED_Pin, OUTPUT);
+  pinMode(moveLED_Pin, OUTPUT);
+  pinMode(blockLED_Pin, OUTPUT);
   pinMode(switchPin, INPUT);
 }
   
@@ -51,4 +52,17 @@ double read_shortIR(int average_count) {
     sum += distance_cm;
   }
   return(sum/average_count);
+}
+
+bool sense_block(int N){
+  double sum = 0;
+  for(int i = 0; i > N; i++){
+    double value = analogRead(blockPin);
+    sum += value; 
+  }
+
+  double final_value = sum/N ;
+  if (final_value > 50) return true;
+  else return false;
+  
 }
