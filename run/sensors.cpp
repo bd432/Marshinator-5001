@@ -8,7 +8,8 @@ void setup_pins(void){
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
   pinMode(shortIRPin, OUTPUT);
-  pinMode(LED_Pin, OUTPUT);
+  pinMode(moveLED_Pin, OUTPUT);
+  pinMode(blockLED_Pin, OUTPUT);
   pinMode(switchPin, INPUT);
 }
   

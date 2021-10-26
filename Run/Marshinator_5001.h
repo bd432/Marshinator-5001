@@ -7,7 +7,8 @@
 #define trigPin2 1
 #define echoPin2 A1
 #define shortIRPin A2
-#define LED_Pin 7
+#define moveLED_Pin 7
+#define blockLED_Pin 6
 #define blockPin A3
 #define switchPin 6
 

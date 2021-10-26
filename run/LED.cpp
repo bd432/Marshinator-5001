@@ -23,7 +23,7 @@ void LED_check(void){
     }
 
     // set the LED with the ledState of the variable:
-    digitalWrite(LED_Pin, ledState);
+    digitalWrite(moveLED_Pin, ledState);
   }
 }
 
