@@ -4,7 +4,7 @@
 // List 2: Front US sensor
 
 sensor_list_t ultrasound_1_list, ultrasound_2_list;
-robot_state_t robot_state = IDLE;
+robot_state_t robot_state = MOVE_TO_DROP;
 
 void setup() {
   //pinMode(NINA_RESETN, OUTPUT);
@@ -19,7 +19,7 @@ void setup() {
   setup_LED();
 
   //Initial drive state
-  driving_state_t initial_dr = STATIONARY;
+  driving_state_t initial_dr = FORWARDS;
   set_drive(initial_dr , drive_speed);
 }
 
@@ -66,7 +66,11 @@ void loop(){
       else turn_and_check_left(45,0.1);
       break;
     case COLLECT_BLOCK:
-      if (block_detected()) robot_state = IDENTIFY_BLOCK; // Account for radar offset
+      if (block_detected()) { 
+        robot_state = IDENTIFY_BLOCK; // Account for radar offset
+        set_drive(STATIONARY);
+        start_time = millis();
+      }
       if (millis() - start_time > collect_block_timout * 1000) robot_state = SCAN_BLOCKS;
       break;
     case IDENTIFY_BLOCK:

@@ -56,11 +56,11 @@ void set_drive(int state){
       Motor1->run(RELEASE);
       Motor2->run(RELEASE);
       break;
-    case 1:
+    case 2:
       Motor1->run(FORWARD);
       Motor2->run(FORWARD);
       break;    
-    case 2:
+    case 1:
       Motor1->run(BACKWARD);
       Motor2->run(BACKWARD);
       break;    
