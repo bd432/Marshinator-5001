@@ -21,12 +21,14 @@ void setup() {
   //Initial drive state
   driving_state_t initial_dr = FORWARDS;
   set_drive(initial_dr , drive_speed);
+  Serial.println("Drive");
 }
 
 
 void loop(){
   static double polar_coor[2];
   static unsigned long start_time;
+  Serial.println("Loop");
 
   switch (robot_state){
     case IDLE:
@@ -36,6 +38,7 @@ void loop(){
       }
       break;
     case MOVE_TO_BLOCKS:
+      Serial.println("Move along wall");
       //Turns to align with wall and starts driving
       turn_and_check_left(45, 0.1);
       set_drive(FORWARDS, drive_speed);
@@ -66,12 +69,14 @@ void loop(){
       else turn_and_check_left(45,0.1);
       break;
     case COLLECT_BLOCK:
+    /*
       if (block_detected()) { 
         robot_state = IDENTIFY_BLOCK; // Account for radar offset
-        set_drive(STATIONARY);
+        set_drive(STATIONARY, drive_speed);
         start_time = millis();
       }
       if (millis() - start_time > collect_block_timout * 1000) robot_state = SCAN_BLOCKS;
+      */
       break;
     case IDENTIFY_BLOCK:
       break;

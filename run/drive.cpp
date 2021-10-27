@@ -9,6 +9,7 @@ void turn_right(double angle, bool forward_after_turn){
   //change its drive state at the end of each microturn loop 
   double turn_time = angle * turn_scale_factor;
   driving_state_t d_state = RIGHT;
+  set_drive(d_state, drive_speed);
   delay(turn_time);
   if(forward_after_turn){
    d_state = FORWARDS;
@@ -21,6 +22,7 @@ void turn_right(double angle, bool forward_after_turn){
 void turn_left(double angle, bool forward_after_turn){
   double turn_time = angle * turn_scale_factor;
   driving_state_t d_state = LEFT;
+  set_drive(d_state, drive_speed);
   delay(turn_time);
   if(forward_after_turn){
     d_state = FORWARDS;

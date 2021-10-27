@@ -62,8 +62,10 @@ void follow_wall(int wall_no, unsigned long max_duration){
   unsigned long duration = 0;
   unsigned long start_time = millis();
   int corners_turned = 0;
+  Serial.println("Follow wall");
   while (corners_turned < wall_no and duration < max_duration){
-    Serial.println("Loop");
+    Serial.println("Loop in follow wall");
+    
 
     // Reads left ultrasonic output and adds to the list if the robot not anaomolous (travelling < 1 m/s) - otherwise repeats previous reading
     double ultra_Op = read_ultrasound(1,20);
@@ -72,11 +74,14 @@ void follow_wall(int wall_no, unsigned long max_duration){
     else ultrasound_1_list.add(ultrasound_1_list.fetch(0));
     LED_check();
 
+    Serial.println("Read Ultrasound 1");
+
     //delay(100 * delta_t); didnt realise this was in here will try running without before deleting
 
 
     // Reads front ultrasonic output and adds it to list
     ultrasound_2_list.add(read_ultrasound(2,20));
+    Serial.println("Read Ultrtasound 2");
 
     // Execute right turn if close to the end wall
     if(ultrasound_2_list.fetch(0) < 6) {
@@ -91,6 +96,7 @@ void follow_wall(int wall_no, unsigned long max_duration){
       if (derivative >= 0.0 && ultrasound_1_list.fetch(0) > upper_wall_bound) turn_and_pulse(false);
       else if (derivative <= 0.0 && ultrasound_1_list.fetch(0) < lower_wall_bound) turn_and_pulse(true);
     }
+    Serial.println("Check turn");
 
     //  Print of distance/derivative values
     /*

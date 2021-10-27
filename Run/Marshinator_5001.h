@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Servo.h>
+#include <Adafruit_MotorShield.h>
 
 // Pin i/o ports
 #define trigPin1 0
@@ -16,7 +17,7 @@
 #define delta_t 0.05// s
 #define upper_wall_bound 15
 #define lower_wall_bound 10
-#define drive_speed 200
+#define drive_speed 255
 #define turn_scale_factor 14.81 
 #define arm_scale_factor 12 //this needs to be tested and defined
 #define LED_interval 500 //ms
@@ -66,6 +67,8 @@ enum robot_state_t { IDLE = 0, MOVE_TO_BLOCKS = 1, SCAN_BLOCKS = 2, COLLECT_BLOC
 extern sensor_list_t ultrasound_1_list, ultrasound_2_list;
 extern Servo servo;
 extern robot_state_t robot_state;
+//extern Adafruit_MotorShield AFMS;
+//extern Adafruit_DCMotor *Motor1, *Motor2, *ArmMotor;
 
 //LED variables
 extern unsigned long currentMillis;  //stores current time when doing LED check
@@ -89,8 +92,8 @@ void setup_motors(void);
 void set_drive(driving_state_t state, int d_speed);
 
 //Drive
-void turn_right(double angle);
-void turn_left(double angle);
+void turn_right(double angle, bool forward_after);
+void turn_left(double angle, bool forward_after);
 void turn_and_check_right(double angle, double angular_resolution);
 void turn_and_check_left(double angle, double angular_resolution);
 void drive_with_LED(unsigned long duration, double resolution, driving_state_t d_state);
@@ -106,7 +109,7 @@ bool block_type_detection(void);
 void arm_test (double angle1, double angle2, double angle3, double angle4);
 void block_dropoff_and_reset (double ascent_angle, double descent_angle);
 void pickup_block(double descent_angle ,double ascent_angle);
-bool block_detection(void)
+bool block_detection(void);
 
 //Radar
 bool radar_scan(double polar_coor[]);
