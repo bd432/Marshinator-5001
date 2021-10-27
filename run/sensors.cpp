@@ -18,6 +18,7 @@ void setup_pins(void){
 double read_ultrasound(int sensor_no,int N) {
 	double distance, sum = 0.0;
   int trigPin, echoPin;
+  long unsigned start = millis();
   
   // Sensor input -- 1: Left; 2: Front;
   if(sensor_no == 1){
@@ -39,8 +40,13 @@ double read_ultrasound(int sensor_no,int N) {
 	  digitalWrite(trigPin, LOW);
 	  distance =  pulseIn(echoPin, HIGH) * 0.0340 / 2.0;
     sum += distance;
-    delay(10);
-  }
+    //delayMicroseconds(100);
+  } 
+  /*
+  if (sensor_no == 1) Serial.print("UL 1 duration - ");
+  else Serial.print("UL 2 duration - ");
+  Serial.println(millis() - start);
+  */
  
 	return sum/N;
 }

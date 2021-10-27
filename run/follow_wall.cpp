@@ -27,17 +27,18 @@ double calc_average(sensor_list_t list, int N){
 void reset_after_turn(int N){
    driving_state_t d_state = FORWARDS;
    set_drive(d_state, drive_speed);
+
    for (int i = 0; i < N; i++){
-   LED_check();
-   delay(delta_t*1000);
-   ultrasound_1_list.add(read_ultrasound(1,20));
-   ultrasound_2_list.add(read_ultrasound(2,20));
+    LED_check();
+    delay(delta_t*1000);
+    ultrasound_1_list.add(read_ultrasound(1,10));
+    ultrasound_2_list.add(read_ultrasound(2,10));
   }
 }  
 
 void corner_turn(void){
   Serial.println("Corner turn");
-  turn_and_check_right(90, 10);
+  turn_and_check_right(90, 20);
   reset_after_turn(4);
 }
 
@@ -51,13 +52,16 @@ void turn_and_pulse(bool turn_right){
   //Turn robot by an angle of 20 degrees to correct path
   if (turn_right){
     Serial.println("Adjust right");
-    turn_and_check_right(20, 100);
+    turn_and_check_right(20, 20);
   }
-  else
-  turn_and_check_left(20, 100);
-  Serial.println("Adjust left");
+  else{
+    turn_and_check_left(20, 20);
+    Serial.println("Adjust left");
+  }
   //Reset
-  reset_after_turn(4);
+
+  reset_after_turn(2);
+
 }
 
 void follow_wall(int wall_no, unsigned long max_duration){
@@ -66,25 +70,33 @@ void follow_wall(int wall_no, unsigned long max_duration){
   unsigned long start_time = millis();
   int corners_turned = 0;
   Serial.println("Follow wall");
+  Serial.print("Wall_no - ");
+  Serial.println(wall_no);
+  Serial.print("Corners Turned - ");
+  Serial.println(corners_turned);
   while (corners_turned < wall_no and duration < max_duration*1000){
     Serial.println("Loop in follow wall");
     
 
     // Reads left ultrasonic output and adds to the list if the robot not anaomolous (travelling < 1 m/s) - otherwise repeats previous reading
-    double ultra_Op = read_ultrasound(1,20);
+    double ultra_Op = read_ultrasound(1,1);
     double derivative = (ultra_Op - ultrasound_1_list.fetch(0))/delta_t;
     if (ultrasound_1_list.n == 0 || abs(derivative) < 100) ultrasound_1_list.add(ultra_Op);
     else ultrasound_1_list.add(ultrasound_1_list.fetch(0));
     LED_check();
 
-    Serial.println("Read Ultrasound 1");
+
+    Serial.print("Read Ultrasound 1 - ");
+    Serial.println(ultrasound_1_list.fetch(0));
 
     //delay(100 * delta_t); didnt realise this was in here will try running without before deleting
 
 
     // Reads front ultrasonic output and adds it to list
-    /*
-    ultrasound_2_list.add(read_ultrasound(2,20));
+    
+    ultrasound_2_list.add(read_ultrasound(2,1));
+    LED_check();
+
     Serial.print("Read Ultrasound 2 - ");
     Serial.println(ultrasound_2_list.fetch(0));
     // Execute right turn if close to the end wall
@@ -92,7 +104,7 @@ void follow_wall(int wall_no, unsigned long max_duration){
       corner_turn();
       corners_turned += 1 ;
     }
-    */
+    
   
     // Check if within bounds and moving in the right direction -- Correct if otherwise
     if (ultrasound_1_list.n >= 4){
@@ -101,7 +113,6 @@ void follow_wall(int wall_no, unsigned long max_duration){
       if (derivative >= 0.0 && ultrasound_1_list.fetch(0) > upper_wall_bound) turn_and_pulse(false);
       else if (derivative <= 0.0 && ultrasound_1_list.fetch(0) < lower_wall_bound) turn_and_pulse(true);
     }
-    Serial.println("Check turn");
 
     //  Print of distance/derivative values
     /*
@@ -114,11 +125,15 @@ void follow_wall(int wall_no, unsigned long max_duration){
     */
     
     // Delay for time dt
-    delay(1000 * delta_t);
+    delay(500 * delta_t);
     LED_check(); //checks if LED needs to be flashed before moving to next iteration
-
+    delay(500 * delta_t);
+    LED_check();
     //Checks for how long follow_wall function has been running
     duration = millis() - start_time;
 
+
   }
+  
+  Serial.println("Exit Follow wall");
 }

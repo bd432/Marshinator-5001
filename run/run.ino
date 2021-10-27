@@ -41,10 +41,10 @@ void loop(){
       Serial.println("Move along wall");
       //Turns to align with wall and starts driving
       turn_and_check_left(45, 10);
-    set_drive(FORWARDS, drive_speed);
+      set_drive(FORWARDS, drive_speed);
       //Follows wall round to the other side of the arena
-      follow_wall(100000, 1000000000000);
-      follow_wall(100000 ,1500000000000);
+      follow_wall(1, 1000000000000);
+      follow_wall(1 ,1500000000000);
       set_drive(STATIONARY, drive_speed);
       delay(10000);
       //Goes forward for a bit longer before stopping to scan for blocks
@@ -69,7 +69,7 @@ void loop(){
         else turn_and_check_right(-1 * polar_coor[1], 0.1);
       }
       // Rotate and repeat if no block detected
-      else turn_and_check_left(45,0.1);
+      //else turn_and_check_left(45,0.1);
       break;
     //case COLLECT_BLOCK: 
     /*
@@ -89,6 +89,6 @@ void loop(){
       follow_wall(2, 1000);
       break; */
 
-      delay(10000);
+    //delay(10000);
   }
 }

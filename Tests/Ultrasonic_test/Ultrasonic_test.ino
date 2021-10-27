@@ -5,6 +5,7 @@ const int echoPin = A0;
 double duration;
 double distanceCm, distanceInch;
 double IROutput;
+int N = 20;
 
 void setup() {
   pinMode(trigPin, OUTPUT);
@@ -15,16 +16,26 @@ void setup() {
 }
 void loop() {
   // Ultrasonic test
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
-  distanceCm = duration * 0.0340 / 2;
+  //unsigned long start = millis();
+
+  double distance, sum = 0.0;
+  //delay(20);
+
+  for(int i = 0; i < N; i++){
+	  digitalWrite(trigPin, LOW);
+	  delayMicroseconds(2);
+	  digitalWrite(trigPin, HIGH);
+	  delayMicroseconds(10);
+	  digitalWrite(trigPin, LOW);
+	  distance =  pulseIn(echoPin, HIGH) * 0.0340 / 2.0;
+    sum += distance;
+    //delayMicroseconds(100);
+  } 
 
   Serial.print("Py ");
-  Serial.println(distanceCm);
+  Serial.println(sum/N);
+  //Serial.println(millis() - start);
+  
   //Serial.print("Duration - ");
   //Serial.println(duration);
   //Serial.print(distanceCm);

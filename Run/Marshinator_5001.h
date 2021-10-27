@@ -15,7 +15,7 @@
 #define switchPin 6
 
 // Program constants
-#define delta_t 0.05// s
+#define delta_t 0.1// s
 #define upper_wall_bound 15
 #define lower_wall_bound 10
 #define drive_speed 255
