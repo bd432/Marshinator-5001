@@ -11,7 +11,7 @@ Adafruit_DCMotor *Motor2 = AFMS.getMotor(2);
 
 void setup_motors(void){
     Serial.println("Motor setup");
-    
+
     if (!AFMS.begin()) {
         Serial.println("Could not find Motor Shield. Check wiring.");
         //while (1);
@@ -24,7 +24,7 @@ void setup_motors(void){
     Motor2->run(RELEASE);
     //ArmMotor->setSpeed(drive_speed);
     //ArmMotor->run(RELEASE);
-    servo.attach(9);   
+    servo.attach(9);
 }
 
 void set_drive(driving_state_t state, int d_speed){
@@ -39,26 +39,26 @@ void set_drive(driving_state_t state, int d_speed){
     case FORWARDS:
       Motor1->run(FORWARD);
       Motor2->run(FORWARD);
-      break;    
+      break;
     case BACKWARDS:
       Motor1->run(BACKWARD);
       Motor2->run(BACKWARD);
-      break;    
+      break;
     case LEFT:
       Motor1->run(FORWARD);
       Motor2->run(BACKWARD);
-      break;    
+      break;
     case RIGHT:
       Motor1->run(BACKWARD);
       Motor2->run(FORWARD);
-      break;    
+      break;
   }
 }
 
 
 
 
-// Function that gets the arm to descend through an angle to attach to the block 
+// Function that gets the arm to descend through an angle to attach to the block
 // and then raise through an angle to pick the block up
 void pickup_block(double descent_angle ,double ascent_angle){
  //ArmMotor -> run(FORWARD);
@@ -69,7 +69,7 @@ void pickup_block(double descent_angle ,double ascent_angle){
  delay(ascent_angle * arm_scale_factor);
 }
 
-// Function that gets the arm to raise further to drop the block off using the shell mechanism 
+// Function that gets the arm to raise further to drop the block off using the shell mechanism
 // and then return the arm to its original position
 void block_dropoff_and_reset (double ascent_angle, double descent_angle){
   //ArmMotor -> run(BACKWARD);
