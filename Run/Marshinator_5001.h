@@ -9,7 +9,8 @@
 #define echoPin2 A1
 #define shortIRPin A2
 #define moveLED_Pin 7
-#define blockLED_Pin 6
+#define RedLED_Pin 8
+#define GreenLED_Pin 9
 #define blockPin A3
 #define switchPin 6
 
@@ -92,11 +93,9 @@ void setup_motors(void);
 void set_drive(driving_state_t state, int d_speed);
 
 //Drive
-void turn_right(double angle, bool forward_after);
-void turn_left(double angle, bool forward_after);
-void turn_and_check_right(double angle, double angular_resolution);
-void turn_and_check_left(double angle, double angular_resolution);
-void drive_with_LED(unsigned long duration, double resolution, driving_state_t d_state);
+void turn_and_check_left(double angle, double dt);
+void turn_and_check_right(double angle, double dt);
+void drive_with_LED(unsigned long duration, double dt, driving_state_t d_state);
 
 //Sensors
 void setup_pins(void);

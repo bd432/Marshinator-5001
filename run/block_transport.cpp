@@ -26,12 +26,17 @@ bool block_type_detection(void){
   pickup_block(descent_angle_pickup, ascent_angle_pickup);
   bool block_present = sense_block(10);
   if (block_present) {
-    digitalWrite(blockLED_Pin, HIGH);
-    delay(500);
-    digitalWrite(moveLED_Pin, HIGH);
+    digitalWrite(GreenLED_Pin, HIGH);
+    delay(5000);  //change this code to avoid delay
+    digitalWrite(GreenLED_Pin, LOW);
+    return false;
+  }
+  else {
+    digitalWrite(RedLED_Pin, HIGH);
+    delay(5000);  //change this code to avoid delay
+    digitalWrite(RedLED_Pin, LOW);
     return true;
   }
-  else return false;
 }
 
 bool block_detection(void){

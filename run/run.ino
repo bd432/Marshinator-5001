@@ -40,8 +40,8 @@ void loop(){
     case MOVE_TO_BLOCKS:
       Serial.println("Move along wall");
       //Turns to align with wall and starts driving
-      turn_and_check_left(45, 0.1);
-      set_drive(FORWARDS, drive_speed);
+      turn_and_check_left(45, 20);
+    /*  set_drive(FORWARDS, drive_speed);
       //Follows wall round to the other side of the arena
       follow_wall(1, 10000);
       follow_wall(1 ,15);
@@ -68,7 +68,7 @@ void loop(){
       // Rotate and repeat if no block detected
       else turn_and_check_left(45,0.1);
       break;
-    case COLLECT_BLOCK:
+    case COLLECT_BLOCK: */
     /*
       if (block_detected()) { 
         robot_state = IDENTIFY_BLOCK; // Account for radar offset
@@ -77,13 +77,15 @@ void loop(){
       }
       if (millis() - start_time > collect_block_timout * 1000) robot_state = SCAN_BLOCKS;
       */
-      break;
+    /*  break;
     case IDENTIFY_BLOCK:
       break;
     case MOVE_TO_DROP:
       //Returns home
       set_drive(FORWARDS, drive_speed);
       follow_wall(2, 1000);
-      break;
+      break; */
+
+      delay(10000);
   }
-}
+} 
