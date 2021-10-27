@@ -12,7 +12,7 @@ void LED_check(void){
   currentMillis = millis();
   
   if (currentMillis - previousMillis >= interval) {
-    // save the last time you blinked the LED
+    /* save the last time you blinked the LED
     previousMillis = currentMillis;
 
     // if the LED is off turn it on and vice-versa:
@@ -24,9 +24,10 @@ void LED_check(void){
 
     // set the LED with the ledState of the variable:
     digitalWrite(moveLED_Pin, ledState);
+    */
+   Serial.println("LED");
   }
 }
-
 void setup_LED(void){
   ledState = 0;
   previousMillis = 0;

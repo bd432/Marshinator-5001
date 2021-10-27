@@ -4,7 +4,7 @@
 // List 2: Front US sensor
 
 sensor_list_t ultrasound_1_list, ultrasound_2_list;
-robot_state_t robot_state = MOVE_TO_DROP;
+robot_state_t robot_state = MOVE_TO_BLOCKS;
 
 void setup() {
   //pinMode(NINA_RESETN, OUTPUT);
@@ -19,7 +19,7 @@ void setup() {
   setup_LED();
 
   //Initial drive state
-  driving_state_t initial_dr = FORWARDS;
+  driving_state_t initial_dr = STATIONARY;
   set_drive(initial_dr , drive_speed);
   Serial.println("Drive");
 }
@@ -40,11 +40,13 @@ void loop(){
     case MOVE_TO_BLOCKS:
       Serial.println("Move along wall");
       //Turns to align with wall and starts driving
-      turn_and_check_left(45, 20);
-    /*  set_drive(FORWARDS, drive_speed);
+      turn_and_check_left(45, 10);
+    set_drive(FORWARDS, drive_speed);
       //Follows wall round to the other side of the arena
-      follow_wall(1, 10000);
-      follow_wall(1 ,15);
+      follow_wall(100000, 1000000000000);
+      follow_wall(100000 ,1500000000000);
+      set_drive(STATIONARY, drive_speed);
+      delay(10000);
       //Goes forward for a bit longer before stopping to scan for blocks
       drive_with_LED(1000, 10, FORWARDS);
       set_drive(STATIONARY, drive_speed);
@@ -52,6 +54,7 @@ void loop(){
       robot_state = SCAN_BLOCKS;
       break;
     case SCAN_BLOCKS:
+    Serial.println("Scan");
       // Stop robot
       set_drive(STATIONARY, drive_speed);
       // Scan radar
@@ -68,7 +71,7 @@ void loop(){
       // Rotate and repeat if no block detected
       else turn_and_check_left(45,0.1);
       break;
-    case COLLECT_BLOCK: */
+    //case COLLECT_BLOCK: 
     /*
       if (block_detected()) { 
         robot_state = IDENTIFY_BLOCK; // Account for radar offset

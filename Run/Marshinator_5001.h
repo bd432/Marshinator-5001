@@ -21,7 +21,7 @@
 #define drive_speed 255
 #define turn_scale_factor 14.81 
 #define arm_scale_factor 12 //this needs to be tested and defined
-#define LED_interval 500 //ms
+#define LED_interval 250 //ms
 #define anglar_block_tolerance 10 // degrees
 #define collect_block_timout 15 // s 
 
