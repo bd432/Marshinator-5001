@@ -9,7 +9,8 @@ void setup_pins(void){
   pinMode(echoPin2, INPUT);
   pinMode(shortIRPin, OUTPUT);
   pinMode(moveLED_Pin, OUTPUT);
-  pinMode(blockLED_Pin, OUTPUT);
+  pinMode(RedLED_Pin, OUTPUT);
+  pinMode(GreenLED_Pin, OUTPUT);
   pinMode(switchPin, INPUT);
 }
   

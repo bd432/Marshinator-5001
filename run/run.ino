@@ -40,8 +40,8 @@ void loop(){
     case MOVE_TO_BLOCKS:
       Serial.println("Move along wall");
       //Turns to align with wall and starts driving
-      turn_and_check_left(45, 0.1);
-      set_drive(FORWARDS, drive_speed);
+      turn_and_check_left(45, 20);
+    /*  set_drive(FORWARDS, drive_speed);
       //Follows wall round to the other side of the arena
       follow_wall(1, 10000);
       follow_wall(1 ,15);
@@ -56,34 +56,36 @@ void loop(){
       set_drive(STATIONARY, drive_speed);
       // Scan radar
       if (radar_scan(polar_coor)) {
-        // Turn to block if not aligned - move to 
+        // Turn to block if not aligned - move to
         if (polar_coor[1] < anglar_block_tolerance && polar_coor[1] > -anglar_block_tolerance) {
           robot_state = COLLECT_BLOCK;    // Calibration needed so that an angle 0 corresponds to straight ahead
           set_drive(FORWARDS, 200); // Drive at slower speed for collecting block
           start_time = millis(); // Reset timer for COLLECT_BLOCK
         }
-        else if (polar_coor[1] > 0) turn_and_check_left(polar_coor[1], 0.1); 
+        else if (polar_coor[1] > 0) turn_and_check_left(polar_coor[1], 0.1);
         else turn_and_check_right(-1 * polar_coor[1], 0.1);
       }
       // Rotate and repeat if no block detected
       else turn_and_check_left(45,0.1);
       break;
-    case COLLECT_BLOCK:
+    case COLLECT_BLOCK: */
     /*
-      if (block_detected()) { 
+      if (block_detected()) {
         robot_state = IDENTIFY_BLOCK; // Account for radar offset
         set_drive(STATIONARY, drive_speed);
         start_time = millis();
       }
       if (millis() - start_time > collect_block_timout * 1000) robot_state = SCAN_BLOCKS;
       */
-      break;
+    /*  break;
     case IDENTIFY_BLOCK:
       break;
     case MOVE_TO_DROP:
       //Returns home
-      //set_drive(FORWARDS, drive_speed);
-      //follow_wall(2, 1000);
-      break;
+      set_drive(FORWARDS, drive_speed);
+      follow_wall(2, 1000);
+      break; */
+
+      delay(10000);
   }
 }
