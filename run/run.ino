@@ -4,7 +4,7 @@
 // List 2: Front US sensor
 
 sensor_list_t ultrasound_1_list, ultrasound_2_list;
-robot_state_t robot_state = MOVE_TO_DROP;
+robot_state_t robot_state = MOVE_TO_BLOCKS;
 
 void setup() {
   //pinMode(NINA_RESETN, OUTPUT);
@@ -82,8 +82,8 @@ void loop(){
       break;
     case MOVE_TO_DROP:
       //Returns home
-      set_drive(FORWARDS, drive_speed);
-      follow_wall(2, 1000);
+      //set_drive(FORWARDS, drive_speed);
+      //follow_wall(2, 1000);
       break;
   }
 }

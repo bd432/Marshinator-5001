@@ -2,7 +2,7 @@ import serial
 import time
 import matplotlib.pyplot as plt
 
-ser = serial.Serial("COM6", 4800)
+ser = serial.Serial("COM10", 9600)
 print("Start program")
 
 r_list = []

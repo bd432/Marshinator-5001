@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 import datetime as dt
 import matplotlib.animation as animation
 
-ser = serial.Serial("COM6", 9600)
+ser = serial.Serial("COM10", 9600)
 print("Start program")
 
-
+    
 # Parameters
 x_len = 50         # Number of points to display
 y_range = [0, 50]  # Range of possible Y values to display

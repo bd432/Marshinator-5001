@@ -80,6 +80,7 @@ void follow_wall(int wall_no, unsigned long max_duration){
 
 
     // Reads front ultrasonic output and adds it to list
+    /*
     ultrasound_2_list.add(read_ultrasound(2,20));
     Serial.println("Read Ultrtasound 2");
 
@@ -88,6 +89,7 @@ void follow_wall(int wall_no, unsigned long max_duration){
       corner_turn();
       corners_turned += 1 ;
     }
+    */
   
     // Check if within bounds and moving in the right direction -- Correct if otherwise
     if (ultrasound_1_list.n >= 4){

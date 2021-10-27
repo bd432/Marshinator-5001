@@ -31,8 +31,6 @@ void set_drive(driving_state_t state, int d_speed){
   Motor1->setSpeed(d_speed);
   Motor2->setSpeed(d_speed);
 
-  Serial.println("Move");
-
   switch (state){
     case STATIONARY:
       Motor1->run(RELEASE);
