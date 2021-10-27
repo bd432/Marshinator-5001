@@ -26,13 +26,13 @@ void turn_and_check_right(double angle, double dt){
 
 //Function for turning left and simultaneously checking to flash the move LED
 void turn_and_check_left(double angle, double dt){
- 
+  Serial.println("turn and check left");
   double total_turn_time = angle * turn_scale_factor;
   unsigned long running_turn_time = 0;
   unsigned long start_turn_time = millis();
 
-  //sets robot to start turning right
-  set_drive(BACKWARDS, drive_speed);
+  //sets robot to start turning left
+  set_drive(LEFT, drive_speed);
   
   while(running_turn_time < total_turn_time){
 
