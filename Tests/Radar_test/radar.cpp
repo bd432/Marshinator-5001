@@ -18,14 +18,17 @@ bool block_scan(double polar_coor[]){
   for(int i=0; i < blocks_N; i++ ){for(int j=0; j<2;j++) blocks[i][j] = 0;}
 
   // Scan and collect data for the radar
-  servo.write(90-start_angle);
-  delay(2000);
+  //servo.write(90-start_angle);
+  servo.write(start_angle);
+  delay(500);
   double angle, input;
   for (int i =0; i < radar_N ; i++){
-    angle = 90 - start_angle + i * angular_res;
+    //angle = 90 - start_angle + i * angular_res;
+    angle = start_angle + i * angular_res;
     servo.write(angle);
-    delay(40);
-    input =  read_shortIR(100);
+    //delay(1);
+    //delayMicroseconds(500);
+    input =  read_shortIR(20);
     if (input > range_cutoff) radar_data[i] = range_cutoff;
     else radar_data[i] = input;
   }
@@ -81,7 +84,7 @@ bool block_scan(double polar_coor[]){
 
   // Detect blocks from peaks
 
-  double r;
+  double r, r_centre, theta_centre;
   unsigned int block_start, block_end, block_no = 0;
 
   for (int i = 0; i < peaks_N; i++){
@@ -97,7 +100,7 @@ bool block_scan(double polar_coor[]){
       block_start = peaks[i][0] + peaks[i][1] + 2;
       block_end = peaks[i+1][0] + 2;
 
-      theta = angular_res * (block_start + block_end) / 2.0;
+      theta = (angular_res * (block_start + block_end) / 2.0 - theta_offset) * M_PI/ 180 ; // In rad including offset
       r = 0;
 
       Serial.print("Start - ");
@@ -108,15 +111,20 @@ bool block_scan(double polar_coor[]){
       for (int j = block_start; j < block_end + 1; j++)  r += radar_data[j];
       r = r/(1 + block_end-block_start);
 
-      Serial.print("R1 - ");
+      Serial.print("R rad - ");
       Serial.println(r);
-      Serial.print("Theta1 - ");
-      Serial.println(theta);
+      Serial.print("Theta rad - ");
+      Serial.println(theta * 180/M_PI);
       Serial.print("Width1 - ");
       Serial.println((block_end-block_start)* angular_res * r * M_PI/180.0);
 
-      blocks[block_no][0] = r;
-      blocks[block_no][1] = theta;
+      theta_centre = atan( (r * sin(theta) - x_offset)/(r * cos(theta) + y_offset) ) * 180 / M_PI;
+      r_centre = sqrt((r * sin(theta) - x_offset)*(r * sin(theta) - x_offset) + (r * cos(theta) + y_offset)*(r * cos(theta) + y_offset));
+      Serial.print("Theta cen - ");
+      Serial.println(theta_centre);
+
+      blocks[block_no][0] = r_centre;
+      blocks[block_no][1] = theta_centre;
       block_no++;
     }
   }
@@ -126,6 +134,13 @@ bool block_scan(double polar_coor[]){
   Serial.println("Identified blocks");
 
   // Print data
+  if(block_no > 0) {//select_block(polar_coor);
+    Serial.print("R- ");
+    Serial.println(blocks[0][0]);
+    Serial.print("Theta- ");
+    Serial.println(blocks[0][1]);
+  }
+  else Serial.println("Failed");
   
   for (int i = 0; i < radar_N; i++){
     Serial.print("R - ");
@@ -144,14 +159,6 @@ bool block_scan(double polar_coor[]){
 
   Serial.println("Finish print");
 
-
-  if(block_no > 0) {//select_block(polar_coor);
-    Serial.print("R- ");
-    Serial.println(blocks[0][0]);
-    Serial.print("Theta- ");
-    Serial.println(blocks[0][1]);
-  }
-  else Serial.println("Failed");
   
   /*
   for(int i = 0; i < 5; i++){

@@ -16,14 +16,17 @@ bool radar_scan(double polar_coor[]){
   for(int i=0; i < blocks_N; i++ ){for(int j=0; j<2;j++) blocks[i][j] = 0;}
   
   // Scan and collect data for the radar
-  servo.write(90-start_angle);
-  delay(2000);
+  //servo.write(90-start_angle);
+  servo.write(start_angle);
+  delay(100);
   double angle, input;
   for (int i =0; i < radar_N ; i++){
-    angle = 90 - start_angle + i * angular_res;
+    LED_check();
+    //angle = 90 - start_angle + i * angular_res;
+    angle = start_angle + i * angular_res;
     servo.write(angle);
-    delay(40);
-    input =  read_shortIR(100);
+    //delay(5);
+    input =  read_shortIR(20);
     if (input > range_cutoff) radar_data[i] = range_cutoff;
     else radar_data[i] = input;
   }
@@ -73,7 +76,7 @@ bool radar_scan(double polar_coor[]){
 
   // Detect blocks from peaks
 
-  double r;
+  double r, r_centre, theta_centre;
   unsigned int block_start, block_end, block_no = 0;
 
   for (int i = 0; i < peaks_N-1; i++){
@@ -85,18 +88,46 @@ bool radar_scan(double polar_coor[]){
       block_start = peaks[i][0] + peaks[i][1] + 2;
       block_end = peaks[i+1][0] + 2;
       // Calculate the average angle
-      theta = angular_res * (block_start + block_end) / 2.0;
-      // calculate the average distance to the block
+      theta = (angular_res * (block_start + block_end) / 2.0 - theta_offset) * M_PI/ 180 ; // In rad including offset
+      // Calculate the average distance to the block
       r = 0;
       for (int j = block_start; j < block_end + 1; j++)  r += radar_data[j];
       r = r/(1 + block_end-block_start);
+      theta_centre = atan( (r * sin(theta) - x_offset)/(r * cos(theta) + y_offset) ) * 180 / M_PI;
       // Store in blocks
       blocks[block_no][0] = r;
-      blocks[block_no][1] = theta;
-      block_no++;
+      blocks[block_no][1] = theta_centre;
+      block_no += 1;
     }
   }
+  /*
+  Serial.print("Block number - ");
+  Serial.println(block_no);
+  Serial.print("Peak number - ");
+  Serial.println(peak_no);
+  Serial.print("Radar data - ");
+  Serial.println(radar_data[0]);
+  Serial.print("Cart point - ");
+  Serial.println(cart_coor[0][0]);
 
+  for (int i = 0; i < radar_N; i++){
+    Serial.print("R - ");
+    Serial.println(radar_data[i]);
+    delay(10);
+    Serial.print("Theta - ");
+    Serial.println(i * angular_res);
+    delay(10);
+    Serial.print("X - ");
+    Serial.println(cart_coor[i][0]);
+    delay(10);
+    Serial.print("Y - ");
+    Serial.println(cart_coor[i][1]);
+    delay(10);
+  }
+  Serial.println("End");
+  */
+
+  
   // Return first block if detected - Could implement selection process for blocks
   if(block_no > 0){
     polar_coor[0] = blocks[0][0];

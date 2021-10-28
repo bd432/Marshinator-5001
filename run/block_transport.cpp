@@ -4,11 +4,6 @@
 
 
 
-//Adafruit_DCMotor *ArmMotor = AFMS.getMotor(arm_motor);
-
-void setup_arm(void){
-  
-}
 
 
 
@@ -39,6 +34,3 @@ bool block_type_detection(void){
   }
 }
 
-bool block_detection(void){
-  // return if block detected by front line sensor
-}

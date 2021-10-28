@@ -7,7 +7,7 @@ void setup_pins(void){
   pinMode(echoPin1, INPUT);
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
-  pinMode(shortIRPin, OUTPUT);
+  pinMode(shortIRPin, INPUT);
   pinMode(moveLED_Pin, OUTPUT);
   pinMode(RedLED_Pin, OUTPUT);
   pinMode(GreenLED_Pin, OUTPUT);
@@ -51,11 +51,17 @@ double read_ultrasound(int sensor_no,int N) {
 	return sum/N;
 }
 
-double read_shortIR(int average_count) {
+double read_shortIR (int average_count) {
   double sum = 0;
-  for (int i=0; i<average_count; i++) {
+  for (int i=0; i< average_count; i++) {
     double sensor_value = analogRead(shortIRPin); //read the sensor value
     double distance_cm = pow(3027.4/sensor_value, 1.2134); //convert readings to distance(cm)
+    /*
+    Serial.print("Sensor value  ");
+    Serial.print(i);
+    Serial.print(" - ");
+    Serial.println(sensor_value);
+    */
     sum += distance_cm;
   }
   return(sum/average_count);

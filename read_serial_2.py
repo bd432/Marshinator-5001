@@ -55,6 +55,12 @@ while True:
     if serial_str[:7] == "Theta- ":
         print(serial_str)
         i = 0
+    if serial_str[:12] == "Theta rad - ":
+        print(serial_str)
+        i = 0
+    if serial_str[:8] == "R rad - ":
+        print(serial_str)
+        i = 0
 
     if serial_str == "Failed":
         print("Failed")
@@ -69,6 +75,8 @@ while True:
     if serial_str[:9] == "Width1 - ":
         print(serial_str)
         i = 0
+    if serial_str == "End":
+        break
 
     i =  i + 1
     if i > 200:

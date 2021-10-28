@@ -22,14 +22,13 @@
 #define turn_scale_factor 14.81 
 #define arm_scale_factor 12 //this needs to be tested and defined
 #define LED_interval 250 //ms
-#define anglar_block_tolerance 10 // degrees
 #define collect_block_timout 15 // s 
 
 //  Arm Pickup Mechanism        -------- these angles must be tested and then defined later
 #define arm_motor 3
-#define descent_angle_pickup 0
-#define ascent_angle_pickup 0
-#define ascent_angle_dropoff 0
+#define descent_angle_pickup 30
+#define ascent_angle_pickup 10
+#define ascent_angle_dropoff 30
 #define descent_angle_dropoff 0
 
 // Radar variables
@@ -40,6 +39,11 @@
 #define blocks_N 10
 #define threshold 1.5
 #define range_cutoff 40
+#define theta_offset 10 // Measured clockwise of robot
+#define x_offset 12
+#define y_offset 22
+#define anglar_block_tolerance 5 // degrees
+
 
 
 class sensor_list_t {
@@ -62,14 +66,14 @@ class sensor_list_t {
 enum driving_state_t { STATIONARY = 0, FORWARDS = 1, BACKWARDS = 2, RIGHT = 3, LEFT = 4};
 
 // Robot state variables
-enum robot_state_t { IDLE = 0, MOVE_TO_BLOCKS = 1, SCAN_BLOCKS = 2, COLLECT_BLOCK = 3, IDENTIFY_BLOCK = 4, MOVE_TO_DROP = 5};
+enum robot_state_t { IDLE = 0, MOVE_TO_BLOCKS = 1, SCAN_BLOCKS = 2, COLLECT_BLOCK = 3, IDENTIFY_BLOCK = 4, MOVE_TO_DROP = 5, TEST = 6};
 
 // Declare global variables in all files
 extern sensor_list_t ultrasound_1_list, ultrasound_2_list;
 extern Servo servo;
 extern robot_state_t robot_state;
-//extern Adafruit_MotorShield AFMS;
-//extern Adafruit_DCMotor *Motor1, *Motor2, *ArmMotor;
+extern Adafruit_MotorShield AFMS;
+extern Adafruit_DCMotor *Motor1, *Motor2, *ArmMotor;
 
 //LED variables
 extern unsigned long currentMillis;  //stores current time when doing LED check

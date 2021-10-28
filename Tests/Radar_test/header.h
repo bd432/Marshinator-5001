@@ -23,6 +23,9 @@
 #define blocks_N 10
 #define threshold 1
 #define range_cutoff 40
+#define theta_offset 10 // Measured clockwise of robot
+#define x_offset 10
+#define y_offset 10
 
 extern Servo servo;
 
