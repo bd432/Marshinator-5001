@@ -155,12 +155,14 @@ void find_wall(void){
    Serial.println("Find wall");
    double  US_1_input, US_2_input;
    while(true){
-    US_1_input = read_ultrasoun(d1,1);
-    US_2_input = read_ultrasound(1,1);
-    if (US_1_input != 0 && US_2_input != 0 &&  US_1_input < wall_check_threshold && US_2_input < wall_check_threshold){
-      move_until_corner_turn(10);
-      set_drive(STATIONARY, drive_speed);
-      return;
-    }
-    else turn_and_check_left(10, 10);
+      US_1_input = read_ultrasound(1,1);
+      US_2_input = read_ultrasound(1,1);
+      if (US_1_input != 0 && US_2_input != 0 &&  US_1_input < wall_check_threshold && US_2_input < wall_check_threshold){
+        move_until_corner_turn(10);
+        set_drive(STATIONARY, drive_speed);
+        return;
+      }
+      else turn_and_check_left(10, 10);
+   }
+
 }

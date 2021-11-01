@@ -96,6 +96,7 @@ void turn_and_pulse(bool turn_right);
 void reset_after_turn(int N);
 void corner_turn(bool reset);
 void move_until_corner_turn(double timeout);
+void find_wall(void);
 void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double lower_wall_bound, double upper_wall_bound);
 
 //LED
