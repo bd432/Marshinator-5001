@@ -52,10 +52,10 @@ void turn_and_pulse(bool turn_right){
   //Turn robot by an angle of 20 degrees to correct path
   if (turn_right){
     Serial.println("Adjust right");
-    turn_and_check_right(20, 20);
+    turn_and_check_right(15, 20);
   }
   else{
-    turn_and_check_left(20, 20);
+    turn_and_check_left(15, 20);
     Serial.println("Adjust left");
   }
   //Reset
@@ -64,18 +64,20 @@ void turn_and_pulse(bool turn_right){
 
 }
 
-void follow_wall(int wall_no, unsigned long max_duration){
+void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double lower_wall_bound, double upper_wall_bound){
 
   unsigned long duration = 0;
   unsigned long start_time = millis();
   int corners_turned = 0;
+
   Serial.println("Follow wall");
-  Serial.print("Wall_no - ");
-  Serial.println(wall_no);
-  Serial.print("Corners Turned - ");
-  Serial.println(corners_turned);
+
   while (corners_turned < wall_no and duration < max_duration*1000){
     Serial.println("Loop in follow wall");
+
+    // Break from follow wall if reached a white line if condition
+
+    if(white_line && detect_line()) {Serial.println("Exit Follow wall - White line"); return;}
     
 
     // Reads left ultrasonic output and adds to the list if the robot not anaomolous (travelling < 1 m/s) - otherwise repeats previous reading
@@ -85,15 +87,10 @@ void follow_wall(int wall_no, unsigned long max_duration){
     else ultrasound_1_list.add(ultrasound_1_list.fetch(0));
     LED_check();
 
-
     Serial.print("Read Ultrasound 1 - ");
     Serial.println(ultrasound_1_list.fetch(0));
 
-    //delay(100 * delta_t); didnt realise this was in here will try running without before deleting
-
-
     // Reads front ultrasonic output and adds it to list
-    
     ultrasound_2_list.add(read_ultrasound(2,1));
     LED_check();
 
@@ -131,8 +128,6 @@ void follow_wall(int wall_no, unsigned long max_duration){
     LED_check();
     //Checks for how long follow_wall function has been running
     duration = millis() - start_time;
-
-
   }
   
   Serial.println("Exit Follow wall");

@@ -2,11 +2,6 @@
 #include "Marshinator_5001.h"
 #include <Adafruit_MotorShield.h>
 
-
-
-
-
-
 // Tests the block pickup and dropoff mechanism as a whole 
 // to make sure the arm correctly returns to its original position
 void arm_test (double angle1, double angle2, double angle3, double angle4){
@@ -18,18 +13,24 @@ void arm_test (double angle1, double angle2, double angle3, double angle4){
 // if it remains in place after attempted lift
 // If function returns true, block contains metal
 bool block_type_detection(void){
+  // Raise arm
+  pickup_block(0,30);
+  // Pickup block
   pickup_block(descent_angle_pickup, ascent_angle_pickup);
-  bool block_present = sense_block(10);
+  delay(100);
+  bool block_present = blockSensor();
   if (block_present) {
     digitalWrite(GreenLED_Pin, HIGH);
-    delay(5000);  //change this code to avoid delay
     digitalWrite(GreenLED_Pin, LOW);
+    // Raise arm
+    pickup_block(0,30);
     return false;
   }
   else {
     digitalWrite(RedLED_Pin, HIGH);
-    delay(5000);  //change this code to avoid delay
     digitalWrite(RedLED_Pin, LOW);
+    // Raise arm
+    pickup_block(0,30);
     return true;
   }
 }

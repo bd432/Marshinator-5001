@@ -30,5 +30,7 @@ void LED_check(void){
 }
 void setup_LED(void){
   ledState = 0;
+  digitalWrite(RedLED_Pin, LOW);
+  digitalWrite(GreenLED_Pin, LOW);
   previousMillis = 0;
 }

@@ -4,15 +4,12 @@
 // List 2: Front US sensor
 
 sensor_list_t ultrasound_1_list, ultrasound_2_list;
-robot_state_t robot_state = IDENTIFY_BLOCK;
+robot_state_t robot_state = IDLE;
 
 void setup() {
-  //pinMode(NINA_RESETN, OUTPUT);
-  //digitalWrite(NINA_RESETN, LOW);
 
   Serial.begin(9600);  // set up Serial library at 9600 bps
   Serial.println("Initialise program"); 
-  //SerialNina.begin(115200);
 
   setup_pins();
   setup_motors();
@@ -21,7 +18,6 @@ void setup() {
   //Initial drive state
   driving_state_t initial_dr = STATIONARY;
   set_drive(initial_dr , drive_speed);
-  Serial.println("Drive");
 }
 
 
@@ -33,8 +29,12 @@ void loop(){
   switch (robot_state){
     case IDLE:
       set_drive(STATIONARY, drive_speed);
-      if (digitalRead(switchPin)) {
-        robot_state = MOVE_TO_BLOCKS;
+      if (switchOn()) {
+        robot_state = SCAN_BLOCKS;
+        set_drive(FORWARDS, 255);
+        start_time = millis();
+        // Raise arm
+        pickup_block(0,30);
       }
       break;
     case MOVE_TO_BLOCKS:
@@ -43,18 +43,18 @@ void loop(){
       turn_and_check_left(45, 10);
       set_drive(FORWARDS, drive_speed);
       //Follows wall round to the other side of the arena
-      follow_wall(1, 1000000000000);
-      follow_wall(1 ,1500000000000);
+      follow_wall(1, 100000, false, lower_wall_bound_1, upper_wall_bound_1);
+      follow_wall(1 ,150000, true, lower_wall_bound_2, upper_wall_bound_2);
       set_drive(STATIONARY, drive_speed);
-      delay(10000);
+      delay(1000);
       //Goes forward for a bit longer before stopping to scan for blocks
-      drive_with_LED(1000, 10, FORWARDS);
+      drive_with_LED(1000, 10, BACKWARDS);
       set_drive(STATIONARY, drive_speed);
       ledState=LOW; //Turn off LED now robot has stopped moving
       robot_state = SCAN_BLOCKS;
       break;
     case SCAN_BLOCKS:
-    Serial.println("Scan");
+      Serial.println("Scan");
       // Stop robot
       set_drive(STATIONARY, drive_speed);
       // Scan radar
@@ -75,10 +75,11 @@ void loop(){
       else {turn_and_check_right(90,10);Serial.println("No block detected - Rotate");}
       break;
     case COLLECT_BLOCK:
-      if (sense_block(10)) {
+      if (blockSensor()) {
         robot_state = IDENTIFY_BLOCK; // Account for radar offset
         set_drive(STATIONARY, drive_speed);
         start_time = millis();
+        break;
       }
       // Return to Scan blocks if time out
       if (millis() - start_time > collect_block_timout * 1000){
@@ -90,21 +91,34 @@ void loop(){
       } 
      break;
     case IDENTIFY_BLOCK:
-      pickup_block(0,30);
-      block_type_detection();
-      
-      
+      //if (!blockSensor()) {robot_state = SCAN_BLOCKS; break;};
+
+      Serial.print ("Block type - ");
+      if (block_type_detection()) Serial.println("Red");
+      else Serial.println("Blue");
+
+      Serial.println("Idle");
+      robot_state = IDLE;
 
       break;
     case MOVE_TO_DROP:
       //Returns home
       set_drive(FORWARDS, drive_speed);
-      follow_wall(2, 1000);
+      follow_wall(1, 100000, false, lower_wall_bound_1, upper_wall_bound_1);
+      follow_wall(1 ,150000, true, lower_wall_bound_2, upper_wall_bound_2);
       break;
     case TEST:
-      Serial.println("Pickup");
-      pickup_block(5,5);
-      delay(1500);
+      Serial.println("Start");
+      Serial.print("Initial - ");
+      if( blockSensor() ) Serial.println("Block detected");
+      else Serial.println("Not detected");
+      pickup_block(0,30);
+      block_type_detection();
+      delay(100);
+      Serial.print("Final - ");
+      if( blockSensor() ) Serial.println("Block detected");
+      else Serial.println("Not detected");
+      delay(1000);
       break;
   }
 }

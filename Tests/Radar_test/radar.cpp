@@ -20,7 +20,7 @@ bool block_scan(double polar_coor[]){
   // Scan and collect data for the radar
   //servo.write(90-start_angle);
   servo.write(start_angle);
-  delay(500);
+  delay(1000);
   double angle, input;
   for (int i =0; i < radar_N ; i++){
     //angle = 90 - start_angle + i * angular_res;
@@ -174,7 +174,7 @@ bool block_scan(double polar_coor[]){
   // Scan for peaks
   
   //detected = detect_blocks(peaks, blocks, radar_data);
-
+  Serial.println("End");
   if(block_no > 0) return true;
   else return false;
 }

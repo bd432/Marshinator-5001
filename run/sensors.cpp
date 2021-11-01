@@ -12,6 +12,10 @@ void setup_pins(void){
   pinMode(RedLED_Pin, OUTPUT);
   pinMode(GreenLED_Pin, OUTPUT);
   pinMode(switchPin, INPUT);
+  pinMode(buttonPin, INPUT);
+  pinMode(statePin, OUTPUT);
+  pinMode(line1Pin, INPUT);
+  pinMode(line2Pin, INPUT);
 }
   
 //Read Ultrasound sensor
@@ -67,6 +71,7 @@ double read_shortIR (int average_count) {
   return(sum/average_count);
 }
 
+// Redundant
 bool sense_block(int N){
   double sum = 0;
   for(int i = 0; i > N; i++){
@@ -78,4 +83,25 @@ bool sense_block(int N){
   if (final_value > 50) return true;
   else return false;
   
+}
+
+bool blockSensor(void) {
+  if (analogRead(line1Pin) > 100) return true; 
+  else return false;
+}
+
+bool switchOn(void) {
+  int buttonState = digitalRead(buttonPin);
+  if (buttonState == HIGH) {
+    digitalWrite(statePin, HIGH);
+    return true;
+  } else {
+    digitalWrite(statePin, LOW);
+    return false;
+  }
+}
+
+bool detect_line(void){
+  if (analogRead(line2Pin) > 300) return true; 
+  else return false;
 }
