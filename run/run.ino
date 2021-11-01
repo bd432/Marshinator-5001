@@ -4,7 +4,7 @@
 // List 2: Front US sensor
 
 sensor_list_t ultrasound_1_list, ultrasound_2_list;
-robot_state_t robot_state = IDLE;
+robot_state_t robot_state = SCAN_BLOCKS;
 
 void setup() {
 
@@ -24,17 +24,17 @@ void setup() {
 void loop(){
   static double polar_coor[2];
   static unsigned long start_time;
-  //Serial.println("Loop");
+  bool red_block;
 
   switch (robot_state){
     case IDLE:
       set_drive(STATIONARY, drive_speed);
       if (switchOn()) {
         robot_state = SCAN_BLOCKS;
-        set_drive(FORWARDS, 255);
+        //set_drive(FORWARDS, 255);
         start_time = millis();
         // Raise arm
-        pickup_block(0,30);
+        pickup_block(0,50);
       }
       break;
     case MOVE_TO_BLOCKS:
@@ -68,11 +68,12 @@ void loop(){
           Serial.println(polar_coor[1]);
           start_time = millis(); // Reset timer for COLLECT_BLOCK
         }
-        else if (polar_coor[1] > 0) turn_and_check_left(polar_coor[1], 10);
-        else turn_and_check_right(-1 * polar_coor[1], 10);
+        // Turn towards block and move ten move to collect
+        else if (polar_coor[1] > 0) {turn_and_check_left(polar_coor[1], 10); robot_state = COLLECT_BLOCK; set_drive(FORWARDS, 255); start_time = millis();}
+        else {turn_and_check_right(-1 * polar_coor[1], 10); robot_state = COLLECT_BLOCK; set_drive(FORWARDS, 255); start_time = millis();}
       }
       // Rotate and repeat if no block detected
-      else {turn_and_check_right(90,10);Serial.println("No block detected - Rotate");}
+      else {turn_and_check_left(45,10);Serial.println("No block detected - Rotate");}
       break;
     case COLLECT_BLOCK:
       if (blockSensor()) {
@@ -94,19 +95,33 @@ void loop(){
       //if (!blockSensor()) {robot_state = SCAN_BLOCKS; break;};
 
       Serial.print ("Block type - ");
-      if (block_type_detection()) Serial.println("Red");
-      else Serial.println("Blue");
+      if (block_type_detection()) {red_block = true; Serial.println("Red");}
+      else {red_block = false; Serial.println("Blue");}
 
-      Serial.println("Idle");
-      robot_state = IDLE;
+      find_wall();
+      robot_state = MOVE_TO_DROP;
 
       break;
     case MOVE_TO_DROP:
       //Returns home
       set_drive(FORWARDS, drive_speed);
       follow_wall(1, 100000, false, lower_wall_bound_1, upper_wall_bound_1);
-      follow_wall(1 ,150000, true, lower_wall_bound_2, upper_wall_bound_2);
+
+      if (red_block){
+        follow_wall(1, 100000, false, lower_wall_bound_1, upper_wall_bound_1);
+        follow_wall(1 ,150000, true, lower_wall_bound_2, upper_wall_bound_2);
+        deposit_block_and_reverse();
+      }
+      else{
+        follow_wall(1 ,150000, true, lower_wall_bound_2, upper_wall_bound_2);
+        deposit_block_and_reverse();
+      }
+
+      find_wall();
+      robot_state = MOVE_TO_BLOCKS;
+    
       break;
+
     case TEST:
       Serial.println("Start");
       Serial.print("Initial - ");

@@ -25,16 +25,17 @@
 #define upper_wall_bound_2 12 // Bounds for second wall
 #define lower_wall_bound_2 6
 #define drive_speed 255
-#define turn_scale_factor_left 10.98
-#define turn_scale_factor_right 14.36
+#define turn_scale_factor_left 10//10.98
+#define turn_scale_factor_right 10//20
 #define arm_scale_factor 12 //this needs to be tested and defined
 #define LED_interval 250 //ms
-#define collect_block_timout 15 // s 
+#define collect_block_timout 4 // s 
+#define wall_check_threshold 80 //cm
 
 //  Arm Pickup Mechanism        -------- these angles must be tested and then defined later
 #define arm_motor 3
-#define descent_angle_pickup 30
-#define ascent_angle_pickup 30
+#define descent_angle_pickup 50
+#define ascent_angle_pickup 50
 #define ascent_angle_dropoff 30
 #define descent_angle_dropoff 0
 
@@ -73,7 +74,7 @@ class sensor_list_t {
 enum driving_state_t { STATIONARY = 0, FORWARDS = 1, BACKWARDS = 2, RIGHT = 3, LEFT = 4};
 
 // Robot state variables
-enum robot_state_t { IDLE = 0, MOVE_TO_BLOCKS = 1, SCAN_BLOCKS = 2, COLLECT_BLOCK = 3, IDENTIFY_BLOCK = 4, MOVE_TO_DROP = 5, TEST = 6};
+enum robot_state_t { IDLE = 0, MOVE_TO_BLOCKS = 1, SCAN_BLOCKS = 2, COLLECT_BLOCK = 3, IDENTIFY_BLOCK = 4, MOVE_TO_DROP = 5, TEST = 6, FIND_WALL = 7};
 
 // Declare global variables in all files
 extern sensor_list_t ultrasound_1_list, ultrasound_2_list;
@@ -93,6 +94,8 @@ double calc_finite_difference(sensor_list_t list, double dt);
 double calc_average(sensor_list_t list, int N);
 void turn_and_pulse(bool turn_right);
 void reset_after_turn(int N);
+void corner_turn(bool reset);
+void move_until_corner_turn(double timeout);
 void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double lower_wall_bound, double upper_wall_bound);
 
 //LED
@@ -123,6 +126,7 @@ void arm_test (double angle1, double angle2, double angle3, double angle4);
 void block_dropoff_and_reset (double ascent_angle, double descent_angle);
 void pickup_block(double descent_angle ,double ascent_angle);
 bool block_detection(void);
+void deposit_block_and_reverse(void);
 
 //Radar
 bool radar_scan(double polar_coor[]);

@@ -36,10 +36,10 @@ void reset_after_turn(int N){
   }
 }  
 
-void corner_turn(void){
+void corner_turn(bool reset){
   Serial.println("Corner turn");
   turn_and_check_right(90, 20);
-  reset_after_turn(4);
+  if (reset) reset_after_turn(4);
 }
 
 void turn_and_pulse(bool turn_right){
@@ -98,7 +98,7 @@ void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double
     Serial.println(ultrasound_2_list.fetch(0));
     // Execute right turn if close to the end wall
     if(ultrasound_2_list.fetch(0) < 6) {
-      corner_turn();
+      corner_turn(true);
       corners_turned += 1 ;
     }
     
@@ -131,4 +131,36 @@ void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double
   }
   
   Serial.println("Exit Follow wall");
+}
+
+void move_until_corner_turn(double timeout){
+  unsigned long start_time = millis();
+  double ultra_in;
+  set_drive(FORWARDS, drive_speed);
+
+  while (true){
+    ultra_in  = read_ultrasound(2,1);
+    if (ultra_in < 6 && ultra_in != 0){
+      corner_turn(false);
+      set_drive(STATIONARY, drive_speed);
+      return;
+    }
+    if (millis() - start_time > 1000* timeout) return;
+
+    delay(1000* delta_t);
+  }
+}
+
+void find_wall(void){
+   Serial.println("Find wall");
+   double  US_1_input, US_2_input;
+   while(true){
+    US_1_input = read_ultrasoun(d1,1);
+    US_2_input = read_ultrasound(1,1);
+    if (US_1_input != 0 && US_2_input != 0 &&  US_1_input < wall_check_threshold && US_2_input < wall_check_threshold){
+      move_until_corner_turn(10);
+      set_drive(STATIONARY, drive_speed);
+      return;
+    }
+    else turn_and_check_left(10, 10);
 }

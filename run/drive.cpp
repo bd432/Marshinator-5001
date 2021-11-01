@@ -20,7 +20,6 @@ void turn_and_check_right(double angle, double dt){
     running_turn_time = millis() - start_turn_time;
     LED_check();
     delay(dt);
-
     }
 }
 
