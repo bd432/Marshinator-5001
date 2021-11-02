@@ -25,7 +25,7 @@ void turn_and_check_right(double angle, double dt){
 
 //Function for turning left and simultaneously checking to flash the move LED
 void turn_and_check_left(double angle, double dt){
-  Serial.println("turn and check left");
+  //Serial.println("turn and check left");
   double total_turn_time = angle * turn_scale_factor_left;
   unsigned long running_turn_time = 0;
   unsigned long start_turn_time = millis();

@@ -1,11 +1,11 @@
 #include <Wire.h>
 
-const int trigPin = 0;
-const int echoPin = A0;
+const int trigPin = 5;
+const int echoPin = 4;
 double duration;
 double distanceCm, distanceInch;
 double IROutput;
-int N = 50;
+int N = 1;
 
 void setup() {
   pinMode(trigPin, OUTPUT);

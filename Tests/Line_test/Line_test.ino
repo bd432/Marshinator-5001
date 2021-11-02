@@ -1,4 +1,4 @@
-int linePin =  A3;
+int linePin =  A1;
 
 void setup() {
   // put your setup code here, to run once:

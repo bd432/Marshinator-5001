@@ -20,7 +20,6 @@ ax = fig.add_subplot(1, 1, 1)
 xs = list(range(0, x_len))
 ys = [0] * x_len
 ax.set_ylim(y_range)
-
 # Create a blank line. We will update the line in animate
 line, = ax.plot(xs, ys)
 

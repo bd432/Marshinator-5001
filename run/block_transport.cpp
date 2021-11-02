@@ -44,7 +44,7 @@ bool block_type_detection(void){
 
 void deposit_block_and_reverse(void){
   set_drive(STATIONARY, drive_speed);
-  pickup_block(0,100);
+  pickup_block(0,300);
   set_drive(BACKWARDS, drive_speed);
   delay(500);
   set_drive(STATIONARY, drive_speed);

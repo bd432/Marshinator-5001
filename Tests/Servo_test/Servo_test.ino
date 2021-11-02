@@ -8,7 +8,7 @@ void setup()
 { 
   Serial.begin(9600);
   Serial.println("Initiate program");
-  servo_test.attach(9);      // attach the signal pin of servo to pin9 of arduino
+  servo_test.attach(10);      // attach the signal pin of servo to pin9 of arduino
 } 
 
 void loop() { 
@@ -40,7 +40,7 @@ void loop() {
   Serial.println(30);
   delay(500);
 
-  //servo_test.write(150);
+  servo_test.write(130);
   //Serial.println(150);
   delay(500);
 

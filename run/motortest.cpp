@@ -24,7 +24,7 @@ void setup_motors(void){
     Motor2->run(RELEASE);
     ArmMotor->setSpeed(drive_speed);
     ArmMotor->run(RELEASE);
-    servo.attach(9);
+    servo.attach(servoPin);
 }
 
 void set_drive(driving_state_t state, int d_speed){

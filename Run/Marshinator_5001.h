@@ -3,20 +3,21 @@
 #include <Adafruit_MotorShield.h>
 
 // Pin i/o ports
-#define trigPin1 0
-#define echoPin1 A0
-#define trigPin2 1
-#define echoPin2 A1
+#define trigPin1 7
+#define echoPin1 6
+#define trigPin2 5
+#define echoPin2 4
 #define shortIRPin A2
-#define moveLED_Pin 7
-#define RedLED_Pin 8
-#define GreenLED_Pin 13
+#define moveLED_Pin 1 
+#define RedLED_Pin 2
+#define GreenLED_Pin 3 
 #define blockPin A3
-#define switchPin 6
-#define buttonPin 4
+#define switchPin 12
+#define buttonPin 12
 #define statePin 5
-#define line1Pin A3
-#define line2Pin A4
+#define line1Pin A0
+#define line2Pin A1
+#define servoPin 10
 
 // Program constants
 #define delta_t 0.1// s
@@ -29,7 +30,7 @@
 #define turn_scale_factor_right 10//20
 #define arm_scale_factor 12 //this needs to be tested and defined
 #define LED_interval 250 //ms
-#define collect_block_timout 4 // s 
+#define collect_block_timout 3 // s 
 #define wall_check_threshold 80 //cm
 
 //  Arm Pickup Mechanism        -------- these angles must be tested and then defined later
@@ -74,7 +75,7 @@ class sensor_list_t {
 enum driving_state_t { STATIONARY = 0, FORWARDS = 1, BACKWARDS = 2, RIGHT = 3, LEFT = 4};
 
 // Robot state variables
-enum robot_state_t { IDLE = 0, MOVE_TO_BLOCKS = 1, SCAN_BLOCKS = 2, COLLECT_BLOCK = 3, IDENTIFY_BLOCK = 4, MOVE_TO_DROP = 5, TEST = 6, FIND_WALL = 7};
+enum robot_state_t { IDLE = 0, MOVE_TO_BLOCKS = 1, SCAN_BLOCKS = 2, COLLECT_BLOCK = 3, IDENTIFY_BLOCK = 4, MOVE_TO_DROP = 5, TEST = 6, SWEEP_AREA = 7};
 
 // Declare global variables in all files
 extern sensor_list_t ultrasound_1_list, ultrasound_2_list;
@@ -97,7 +98,8 @@ void reset_after_turn(int N);
 void corner_turn(bool reset);
 void move_until_corner_turn(double timeout);
 void find_wall(void);
-void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double lower_wall_bound, double upper_wall_bound);
+bool sweep_strip(void);
+void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double lower_wall_bound, double upper_wall_bound, bool corner_turn);
 
 //LED
 void setup_LED(void);

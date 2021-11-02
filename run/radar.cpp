@@ -21,7 +21,7 @@ bool radar_scan(double polar_coor[]){
   delay(100);
   double angle, input;
   for (int i =0; i < radar_N ; i++){
-    LED_check();
+    //LED_check();
     //angle = 90 - start_angle + i * angular_res;
     angle = start_angle + i * angular_res;
     servo.write(angle);
