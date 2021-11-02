@@ -113,8 +113,10 @@ void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double
     if (ultrasound_1_list.n >= 4){
       derivative = calc_finite_difference(ultrasound_1_list, delta_t);
       // Calls turn and pulse function if out of bounds and moving away
-      if (derivative >= 0.0 && ultrasound_1_list.fetch(0) > upper_wall_bound) turn_and_pulse(false);
-      else if (derivative <= 0.0 && ultrasound_1_list.fetch(0) < lower_wall_bound) turn_and_pulse(true);
+      bool line = false;
+      if (derivative >= 0.0 && ultrasound_1_list.fetch(0) > upper_wall_bound) line =turn_and_pulse(false);
+      else if (derivative <= 0.0 && ultrasound_1_list.fetch(0) < lower_wall_bound)line = turn_and_pulse(true);
+      if (line) return;
     }
 
     //  Print of distance/derivative values
