@@ -10,7 +10,7 @@ void setup() {
   Serial.println("Initialise program");  
 
   setup_sensors();
-  servo.attach(9);  
+  servo.attach(10);  
 
 }
 

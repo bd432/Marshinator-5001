@@ -31,7 +31,7 @@ void loop(){
       set_drive(STATIONARY, drive_speed);
       Serial.println("Idle");
       if (switchOn()) {
-        robot_state = SWEEP_AREA;
+        robot_state = TEST;
         //set_drive(FORWARDS, 255);
         start_time = millis();
         // Raise arm
@@ -41,7 +41,7 @@ void loop(){
     case MOVE_TO_BLOCKS:
       Serial.println("Move along wall");
       //Turns to align with wall and starts driving
-      turn_and_check_left(45, 10);
+      turn_and_check_left(45, 10, false);
       set_drive(FORWARDS, drive_speed);
       //Follows wall round to the other side of the arena
       follow_wall(1, 100000, false, lower_wall_bound_1, upper_wall_bound_1, true);
@@ -66,10 +66,11 @@ void loop(){
       break;
     case SWEEP_AREA: 
       Serial.println("Sweep strip ");
-
-      if (sweep_strip()){
-        robot_state  = IDENTIFY_BLOCK;
-        break;
+      for (int i = 0; i < 5; i++){
+        if (sweep_strip()){
+          robot_state  = IDENTIFY_BLOCK;
+          break;
+        }
       }
       break;
     case SCAN_BLOCKS:
@@ -89,11 +90,11 @@ void loop(){
           break;
         }
         // Turn towards block and move ten move to collect
-        else if (polar_coor[1] > 0) {turn_and_check_left(polar_coor[1], 10); robot_state = COLLECT_BLOCK; set_drive(FORWARDS, 255); start_time = millis(); break;}
-        else {turn_and_check_right(-1 * polar_coor[1], 10); robot_state = COLLECT_BLOCK; set_drive(FORWARDS, 255); start_time = millis(); break;}
+        else if (polar_coor[1] > 0) {turn_and_check_left(polar_coor[1], 10, false); robot_state = COLLECT_BLOCK; set_drive(FORWARDS, 255); start_time = millis(); break;}
+        else {turn_and_check_right(-1 * polar_coor[1], 10, false); robot_state = COLLECT_BLOCK; set_drive(FORWARDS, 255); start_time = millis(); break;}
       }
 
-      turn_and_check_left(30,10);
+      turn_and_check_left(30,10, false);
       set_drive(STATIONARY, drive_speed);
 
       if (radar_scan(polar_coor)) {
@@ -108,17 +109,17 @@ void loop(){
           break;
         }
         // Turn towards block and move ten move to collect
-        else if (polar_coor[1] > 0) {turn_and_check_left(polar_coor[1], 10); robot_state = COLLECT_BLOCK; set_drive(FORWARDS, 255); start_time = millis(); break;}
-        else {turn_and_check_right(-1 * polar_coor[1], 10); robot_state = COLLECT_BLOCK; set_drive(FORWARDS, 255); start_time = millis(); break;}
+        else if (polar_coor[1] > 0) {turn_and_check_left(polar_coor[1], 10, false); robot_state = COLLECT_BLOCK; set_drive(FORWARDS, 255); start_time = millis(); break;}
+        else {turn_and_check_right(-1 * polar_coor[1], 10, false); robot_state = COLLECT_BLOCK; set_drive(FORWARDS, 255); start_time = millis(); break;}
       }
 
-      turn_and_check_right(30,10);
+      turn_and_check_right(30,10, false);
       drive_with_LED(800, 10, FORWARDS);
       set_drive(STATIONARY, drive_speed);
 
 
       // Rotate and repeat if no block detected
-      //else {turn_and_check_left(45,10);Serial.println("No block detected - Rotate");}
+      //else {turn_and_check_left(45,10, false);Serial.println("No block detected - Rotate");}
       break;
     case COLLECT_BLOCK:
       if (blockSensor()) {
@@ -131,7 +132,7 @@ void loop(){
       if (millis() - start_time > collect_block_timout * 1000){
         set_drive(BACKWARDS, drive_speed);
         delay(100);
-        turn_and_check_right(180, 10);
+        turn_and_check_right(180, 10, false);
         set_drive(STATIONARY, drive_speed);
         robot_state = SCAN_BLOCKS;
       } 
@@ -169,8 +170,6 @@ void loop(){
 
     case TEST:
       Serial.println(analogRead(line2Pin));
-      //if (detect_line())Serial.println("Line");
-      //else Serial.println("False");
       delay(100);
       break;
   }

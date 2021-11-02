@@ -45,7 +45,7 @@ bool block_type_detection(void){
 void deposit_block_and_reverse(void){
   set_drive(STATIONARY, drive_speed);
   pickup_block(0,300);
-  set_drive(BACKWARDS, drive_speed);
-  delay(500);
+  drive_with_LED(800, 10, BACKWARDS);
+  turn_and_check_left(45,10, false);
   set_drive(STATIONARY, drive_speed);
 }

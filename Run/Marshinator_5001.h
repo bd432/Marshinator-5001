@@ -93,7 +93,7 @@ extern int ledState; //stores the state of the LED
 //Follow wall
 double calc_finite_difference(sensor_list_t list, double dt);
 double calc_average(sensor_list_t list, int N);
-void turn_and_pulse(bool turn_right);
+bool turn_and_pulse(bool turn_right);
 void reset_after_turn(int N);
 void corner_turn(bool reset);
 void move_until_corner_turn(double timeout);
@@ -110,8 +110,8 @@ void setup_motors(void);
 void set_drive(driving_state_t state, int d_speed);
 
 //Drive
-void turn_and_check_left(double angle, double dt);
-void turn_and_check_right(double angle, double dt);
+bool turn_and_check_left(double angle, double dt, bool line_break);
+bool turn_and_check_right(double angle, double dt, bool line_break);
 void drive_with_LED(unsigned long duration, double dt, driving_state_t d_state);
 
 //Sensors

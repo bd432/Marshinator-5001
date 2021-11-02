@@ -38,12 +38,13 @@ void reset_after_turn(int N){
 
 void corner_turn(bool reset){
   Serial.println("Corner turn");
-  turn_and_check_right(80, 20);
+  turn_and_check_right(80, 20, false);
   if (reset) reset_after_turn(4);
 }
 
-void turn_and_pulse(bool turn_right){
+bool turn_and_pulse(bool turn_right){
   driving_state_t d_state;
+  bool line_break = false;
 
   //if(turn_right) Serial.println("Turn right");
   //else Serial.println("Turn left");
@@ -52,15 +53,16 @@ void turn_and_pulse(bool turn_right){
   //Turn robot by an angle of 20 degrees to correct path
   if (turn_right){
     Serial.println("Adjust right");
-    turn_and_check_right(15, 20);
+    line_break = turn_and_check_right(15, 20, true);
   }
   else{
-    turn_and_check_left(15, 20);
+    line_break = turn_and_check_left(15, 20, true);
     Serial.println("Adjust left");
   }
+  if (line_break) return true;
   //Reset
-
   reset_after_turn(2);
+  return false;
 
 }
 
@@ -150,7 +152,7 @@ void move_until_corner_turn(double timeout){
       return;
     }
     if (millis() - start_time > 1000* timeout) return;
-
+    LED_check();
     delay(1000* delta_t);
   }
 }
@@ -166,16 +168,14 @@ void find_wall(void){
         set_drive(STATIONARY, drive_speed);
         return;
       }
-      else turn_and_check_left(10, 10);
+      else turn_and_check_left(10, 10, false);
    }
-
 }
-
 
 bool sweep_strip(void){
 
   double US_input;
-  set_drive(FORWARDS, 200);
+  set_drive(FORWARDS, drive_speed);
 
   while (true){
     US_input = read_ultrasound(2,1);
@@ -184,9 +184,9 @@ bool sweep_strip(void){
       Serial.print("US 2 input - ");
       Serial.println(US_input);
       drive_with_LED(5000, 10, BACKWARDS);
-      turn_and_check_right(30,10);
+      turn_and_check_right(30,10, false);
       drive_with_LED(600, 10, FORWARDS);
-      turn_and_check_left(30,10);
+      turn_and_check_left(30,10, false);
       set_drive(STATIONARY, drive_speed);
 
       return false;

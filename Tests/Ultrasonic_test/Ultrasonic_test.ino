@@ -27,8 +27,9 @@ void loop() {
 	  digitalWrite(trigPin, HIGH);
 	  delayMicroseconds(10);
 	  digitalWrite(trigPin, LOW);
-	  distance =  pulseIn(echoPin, HIGH) * 0.0340 / 2.0;
-    sum += distance;
+	  distance =  pulseIn(echoPin, HIGH, 5) * 0.0340 / 2.0;
+    if (distance == 0) sum += 200;
+    else sum += distance;
     //delayMicroseconds(100);
   } 
 

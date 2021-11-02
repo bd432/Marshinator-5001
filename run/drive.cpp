@@ -5,7 +5,7 @@
 
 
 //Function for turning right and simultaneously checking to flash the move LED
-void turn_and_check_right(double angle, double dt){
+bool turn_and_check_right(double angle, double dt, bool line_break){
 
   double total_turn_time = angle * turn_scale_factor_right;
   unsigned long running_turn_time = 0;
@@ -15,32 +15,33 @@ void turn_and_check_right(double angle, double dt){
   set_drive(RIGHT, drive_speed);
 
   while(running_turn_time < total_turn_time){
-
+    if(line_break && detect_line()) return true;
     // Loops through at given interval dt to keep flashing the LED when required
     running_turn_time = millis() - start_turn_time;
     LED_check();
     delay(dt);
-    }
+  }
+  return false;
 }
 
 //Function for turning left and simultaneously checking to flash the move LED
-void turn_and_check_left(double angle, double dt){
-  //Serial.println("turn and check left");
+bool turn_and_check_left(double angle, double dt, bool line_break){
+
   double total_turn_time = angle * turn_scale_factor_left;
   unsigned long running_turn_time = 0;
   unsigned long start_turn_time = millis();
 
-  //sets robot to start turning left
+  //sets robot to start turning right
   set_drive(LEFT, drive_speed);
 
   while(running_turn_time < total_turn_time){
-
+    if(line_break && detect_line()) return true;
     // Loops through at given interval dt to keep flashing the LED when required
     running_turn_time = millis() - start_turn_time;
     LED_check();
     delay(dt);
-
-    }
+  }
+  return false;
 }
 
 //Drives forward while flashing the LED
