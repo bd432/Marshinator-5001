@@ -74,7 +74,7 @@ void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double
 
   Serial.println("Follow wall");
 
-  while (corners_turned < wall_no and duration < max_duration*1000){
+  while (corners_turned < wall_no){
     Serial.println("Loop in follow wall");
 
     // Break from follow wall if reached a white line if condition
@@ -89,13 +89,18 @@ void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double
     double derivative = (ultra_Op - ultrasound_1_list.fetch(0))/delta_t;
     if (ultrasound_1_list.n == 0 || abs(derivative) < 100) ultrasound_1_list.add(ultra_Op);
     else ultrasound_1_list.add(ultrasound_1_list.fetch(0));
+    
+    //checks
     LED_check();
+    if (!corner_turn_bool && blockSensor(50)) {return; Serial.println("Exit Follow wall - Block Detected");}
 
     Serial.print("Read Ultrasound 1 - ");
     Serial.println(ultrasound_1_list.fetch(0));
 
     // Reads front ultrasonic output and adds it to list
     ultrasound_2_list.add(read_ultrasound(2,1));
+
+    //checks
     LED_check();
     if(white_line && detect_line()) {Serial.println("Exit Follow wall - White line"); return;}
 
@@ -132,10 +137,23 @@ void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double
     // Delay for time dt
     delay(500 * delta_t);
     LED_check(); //checks if LED needs to be flashed before moving to next iteration
+    if (!corner_turn_bool && blockSensor(50)) {return; Serial.println("Exit Follow wall - Block Detected");} //checks if block in funnel
+    if(white_line && detect_line()) {Serial.println("Exit Follow wall - White line"); return;}
+    
     delay(500 * delta_t);
     LED_check();
+    if(white_line && detect_line()) {Serial.println("Exit Follow wall - White line"); return;}
+    
     //Checks for how long follow_wall function has been running
     duration = millis() - start_time;
+
+    //Reverses and turns inwards slightly if the function has been running for too long
+    //This is designed to free the robot if it gets stuck on a corner
+    if(duration > max_duration){
+      drive_with_LED(500, 10, BACKWARDS);
+      turn_and_check_left(20, 10, false);
+      start_time = millis(); //resets the start time so the duration is set back to zero
+    }
   }
   
   Serial.println("Exit Follow wall");
