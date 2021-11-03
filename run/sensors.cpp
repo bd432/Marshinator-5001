@@ -86,8 +86,8 @@ bool sense_block(int N){
   
 }
 
-bool blockSensor(void) {
-  if (analogRead(line1Pin) > 100) return true; 
+bool blockSensor(double cutoff) {
+  if (analogRead(line1Pin) > cutoff) return true; 
   else return false;
 }
 

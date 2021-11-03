@@ -120,7 +120,7 @@ double read_ultrasound(int sensor_no,int N);
 double read_shortIR(int average_count);
 bool sense_block(int N);
 bool switchOn(void);
-bool blockSensor(void);
+bool blockSensor(double cutoff);
 bool detect_line(void);
 
 //Block type identification, pickup, transport

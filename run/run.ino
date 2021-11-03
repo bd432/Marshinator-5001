@@ -31,7 +31,7 @@ void loop(){
       set_drive(STATIONARY, drive_speed);
       Serial.println("Idle");
       if (switchOn()) {
-        robot_state = TEST;
+        robot_state = MOVE_TO_BLOCKS;
         //set_drive(FORWARDS, 255);
         start_time = millis();
         // Raise arm
@@ -50,7 +50,7 @@ void loop(){
       ledState=LOW; //Turns off LED now stationary
       delay(1000);
 
-      if(blockSensor()) {
+      if(blockSensor(50)) {
         robot_state = IDENTIFY_BLOCK; 
         set_drive(STATIONARY, drive_speed);
         start_time = millis();
@@ -59,11 +59,11 @@ void loop(){
 
       drive_with_LED(2500, 10, BACKWARDS);
       set_drive(STATIONARY, drive_speed);
-      
-      
       ledState=LOW; //Turn off LED now robot has stopped moving
-      robot_state = SCAN_BLOCKS;
+      
+      robot_state = SWEEP_AREA;
       break;
+      
     case SWEEP_AREA: 
       Serial.println("Sweep strip ");
       for (int i = 0; i < 5; i++){
@@ -96,6 +96,7 @@ void loop(){
 
       turn_and_check_left(30,10, false);
       set_drive(STATIONARY, drive_speed);
+      ledState = LOW; //turns off move LED now robot is stationary
 
       if (radar_scan(polar_coor)) {
         // Turn to block if not aligned - move to
@@ -116,13 +117,14 @@ void loop(){
       turn_and_check_right(30,10, false);
       drive_with_LED(800, 10, FORWARDS);
       set_drive(STATIONARY, drive_speed);
+      ledState=LOW; 
 
 
       // Rotate and repeat if no block detected
       //else {turn_and_check_left(45,10, false);Serial.println("No block detected - Rotate");}
       break;
     case COLLECT_BLOCK:
-      if (blockSensor()) {
+      if (blockSensor(60)) {
         robot_state = IDENTIFY_BLOCK; // Account for radar offset
         set_drive(STATIONARY, drive_speed);
         start_time = millis();
@@ -138,7 +140,9 @@ void loop(){
       } 
      break;
     case IDENTIFY_BLOCK:
-      //if (!blockSensor()) {robot_state = SCAN_BLOCKS; break;};
+      if (!blockSensor(50)) {
+        drive_with_LED(800, 5, BACKWARDS);
+        robot_state = SWEEP_AREA; break;};
 
       Serial.print ("Block type - ");
       if (block_type_detection()) {red_block = true; Serial.println("Red");}

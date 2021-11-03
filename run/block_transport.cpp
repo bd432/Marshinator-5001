@@ -18,7 +18,7 @@ bool block_type_detection(void){
   // Pickup block
   pickup_block(descent_angle_pickup, ascent_angle_pickup);
   delay(100);
-  bool block_present = blockSensor();
+  bool block_present = blockSensor(100);
   if (block_present) {
     digitalWrite(GreenLED_Pin, HIGH);
     delay(5000);
@@ -44,8 +44,10 @@ bool block_type_detection(void){
 
 void deposit_block_and_reverse(void){
   set_drive(STATIONARY, drive_speed);
+  ledState = LOW;
   pickup_block(0,300);
   drive_with_LED(800, 10, BACKWARDS);
   turn_and_check_left(45,10, false);
   set_drive(STATIONARY, drive_speed);
+  ledState = LOW; 
 }

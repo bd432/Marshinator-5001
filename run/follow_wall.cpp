@@ -80,7 +80,7 @@ void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double
     // Break from follow wall if reached a white line if condition
 
     if(white_line && detect_line()) {Serial.println("Exit Follow wall - White line"); return;}
-    if (!corner_turn_bool && blockSensor()) return;
+    if (!corner_turn_bool && blockSensor(50)) {return; Serial.println("Exit Follow wall - Block Detected");}
     
 
     // Reads left ultrasonic output and adds to the list if the robot not anaomolous (travelling < 1 m/s) - otherwise repeats previous reading
@@ -147,6 +147,7 @@ void move_until_corner_turn(double timeout){
   set_drive(FORWARDS, drive_speed);
 
   while (true){
+    LED_check();
     ultra_in  = read_ultrasound(2,1);
     if (ultra_in < 6 && ultra_in != 0){
       corner_turn(false);
@@ -155,7 +156,9 @@ void move_until_corner_turn(double timeout){
     }
     if (millis() - start_time > 1000* timeout) return;
     LED_check();
-    delay(1000* delta_t);
+    delay(500* delta_t);
+    LED_check();
+    delay(500*delta_t);
   }
 }
 
@@ -194,9 +197,10 @@ bool sweep_strip(void){
       return false;
     }
 
-    if (blockSensor()){
+    if (blockSensor(50)){
       Serial.println("Block detected");
       set_drive(STATIONARY, drive_speed);
+      ledState=LOW;
       return true;
     }
 
