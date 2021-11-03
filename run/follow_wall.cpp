@@ -203,9 +203,24 @@ bool sweep_strip(void){
   while (true){
     US_input = read_ultrasound(2,1);
     Serial.println(US_input);
+    
+    //if the block detects the wall infront of it
     if (US_input < 6 &&  US_input!= 0.0){
-      Serial.print("US 2 input - ");
+      Serial.print("US 2 input - "); //prints the ultrasound reading
       Serial.println(US_input);
+
+
+      turn_and_check_right(90,10,false); //turns right to flick block away from wall if block is stuck on wall
+      
+      if (blockSensor(50)){           //checks if block is in funnel
+         Serial.println("Block detected");
+         set_drive(STATIONARY, drive_speed);
+         ledState=LOW;
+         return true;
+      }
+      turn_and_check_left(90,10,false); //turns back to face the wall if it can't detect block
+
+      //returns to sweep down a new path
       drive_with_LED(5000, 10, BACKWARDS);
       turn_and_check_right(30,10, false);
       drive_with_LED(600, 10, FORWARDS);
