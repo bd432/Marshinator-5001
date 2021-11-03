@@ -103,6 +103,6 @@ bool switchOn(void) {
 }
 
 bool detect_line(void){
-  if (analogRead(line2Pin) > 20) return true; 
+  if (analogRead(line2Pin) > 60) return true; 
   else return false;
 }

@@ -26,8 +26,8 @@
 #define upper_wall_bound_2 12 // Bounds for second wall
 #define lower_wall_bound_2 6
 #define drive_speed 255
-#define turn_scale_factor_left 10//10.98
-#define turn_scale_factor_right 10//20
+#define turn_scale_factor_left 11.1//10.98
+#define turn_scale_factor_right 15.1//20
 #define arm_scale_factor 12 //this needs to be tested and defined
 #define LED_interval 250 //ms
 #define collect_block_timout 3 // s 
@@ -99,6 +99,8 @@ void corner_turn(bool reset);
 void move_until_corner_turn(double timeout);
 void find_wall(void);
 bool sweep_strip(void);
+bool sweep_strip_left(void);
+void block_dropoff_and_reset (double ascent_angle, double descent_angle);
 void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double lower_wall_bound, double upper_wall_bound, bool corner_turn);
 
 //LED

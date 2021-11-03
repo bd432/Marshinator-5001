@@ -38,7 +38,7 @@ void reset_after_turn(int N){
 
 void corner_turn(bool reset){
   Serial.println("Corner turn");
-  turn_and_check_right(80, 20, false);
+  turn_and_check_right(70, 20, false);
   if (reset) reset_after_turn(4);
 }
 
@@ -107,7 +107,7 @@ void follow_wall(int wall_no, unsigned long max_duration, bool white_line,double
     Serial.print("Read Ultrasound 2 - ");
     Serial.println(ultrasound_2_list.fetch(0));
     // Execute right turn if close to the end wall
-    if(ultrasound_2_list.fetch(0) < 6) {
+    if(ultrasound_2_list.fetch(0) < 4) {
       if(!corner_turn_bool){ return;}
       corner_turn(true);
       corners_turned += 1 ;
@@ -168,7 +168,7 @@ void move_until_corner_turn(double timeout){
     LED_check();
     ultra_in  = read_ultrasound(2,1);
     if (ultra_in < 6 && ultra_in != 0){
-      corner_turn(false);
+      turn_and_check_right(90, 10, false);
       set_drive(STATIONARY, drive_speed);
       return;
     }
@@ -205,12 +205,14 @@ bool sweep_strip(void){
     Serial.println(US_input);
     
     //if the block detects the wall infront of it
-    if (US_input < 6 &&  US_input!= 0.0){
+    if (US_input < 4 &&  US_input!= 0.0){
       Serial.print("US 2 input - "); //prints the ultrasound reading
       Serial.println(US_input);
 
+      //set_drive(STATIONARY, drive_speed);
 
-      turn_and_check_right(90,10,false); //turns right to flick block away from wall if block is stuck on wall
+      /*
+      turn_and_check_right(75,10,false); //turns right to flick block away from wall if block is stuck on wall
       
       if (blockSensor(50)){           //checks if block is in funnel
          Serial.println("Block detected");
@@ -218,19 +220,89 @@ bool sweep_strip(void){
          ledState=LOW;
          return true;
       }
-      turn_and_check_left(90,10,false); //turns back to face the wall if it can't detect block
+      turn_and_check_left(98,10,false); //turns back to face the wall if it can't detect block
+      */
 
       //returns to sweep down a new path
+
+      delay(500);
+
+      if (blockSensor(100)){           //checks if block is in funnel
+         Serial.println("Block detected");
+         set_drive(STATIONARY, drive_speed);
+         ledState=LOW;
+         return true;
+      }
       drive_with_LED(5000, 10, BACKWARDS);
-      turn_and_check_right(30,10, false);
-      drive_with_LED(600, 10, FORWARDS);
-      turn_and_check_left(30,10, false);
+      turn_and_check_right(50,10, false);
+      drive_with_LED(1100, 10, FORWARDS);
+      turn_and_check_left(43,10, false);
       set_drive(STATIONARY, drive_speed);
 
       return false;
     }
 
-    if (blockSensor(50)){
+    if (blockSensor(100)){
+      Serial.println("Block detected");
+      set_drive(STATIONARY, drive_speed);
+      ledState=LOW;
+      return true;
+    }
+
+    LED_check();
+    delay(5);
+  }
+
+}
+
+bool sweep_strip_left(void){
+
+  double US_input;
+  set_drive(FORWARDS, drive_speed);
+
+  while (true){
+    US_input = read_ultrasound(2,1);
+    Serial.println(US_input);
+    
+    //if the block detects the wall infront of it
+    if (US_input < 4 &&  US_input!= 0.0){
+      Serial.print("US 2 input - "); //prints the ultrasound reading
+      Serial.println(US_input);
+
+      //set_drive(STATIONARY, drive_speed);
+
+      /*
+      turn_and_check_right(75,10,false); //turns right to flick block away from wall if block is stuck on wall
+      
+      if (blockSensor(50)){           //checks if block is in funnel
+         Serial.println("Block detected");
+         set_drive(STATIONARY, drive_speed);
+         ledState=LOW;
+         return true;
+      }
+      turn_and_check_left(98,10,false); //turns back to face the wall if it can't detect block
+      */
+
+      //returns to sweep down a new path
+
+      delay(500);
+
+      if (blockSensor(100)){           //checks if block is in funnel
+         Serial.println("Block detected");
+         set_drive(STATIONARY, drive_speed);
+         ledState=LOW;
+         return true;
+      }
+      drive_with_LED(5000, 10, BACKWARDS);
+      turn_and_check_left(40,10, false);
+      drive_with_LED(1000, 10, FORWARDS);
+      turn_and_check_right(40,10, false);
+      set_drive(STATIONARY, drive_speed);
+
+      return false;
+    }
+
+    if (blockSensor(100)){
       Serial.println("Block detected");
       set_drive(STATIONARY, drive_speed);
       ledState=LOW;

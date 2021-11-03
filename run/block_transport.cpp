@@ -18,15 +18,15 @@ bool block_type_detection(void){
   // Pickup block
   pickup_block(descent_angle_pickup, ascent_angle_pickup);
   delay(100);
-  bool block_present = blockSensor(100);
+  bool block_present = blockSensor(60);
   if (block_present) {
     digitalWrite(GreenLED_Pin, HIGH);
     delay(5000);
     digitalWrite(GreenLED_Pin, LOW);
     // Raise arm
-    pickup_block(0,50);
-    //Lower arm
-    pickup_block(50,0);
+    pickup_block(0,30);
+    // Lower to trap block
+    pickup_block(150,0);
     return false;
   }
   else {
@@ -34,9 +34,9 @@ bool block_type_detection(void){
     delay(5000);
     digitalWrite(RedLED_Pin, LOW);
     // Raise arm
-    pickup_block(0,50);
+    pickup_block(0,30);
     //Lower arm to trap block
-    pickup_block(50,0);
+    pickup_block(150,0);
     return true;
   }
 }
@@ -46,8 +46,9 @@ void deposit_block_and_reverse(void){
   set_drive(STATIONARY, drive_speed);
   ledState = LOW;
   pickup_block(0,300);
+  block_dropoff_and_reset(150,0);
   drive_with_LED(800, 10, BACKWARDS);
-  turn_and_check_left(45,10, false);
+  turn_and_check_left(90,10, false);
   set_drive(STATIONARY, drive_speed);
   ledState = LOW; 
 }

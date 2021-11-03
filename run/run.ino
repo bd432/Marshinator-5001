@@ -24,7 +24,7 @@ void setup() {
 void loop(){
   static double polar_coor[2];
   static unsigned long start_time;
-  bool red_block;
+  static bool red_block;
 
   switch (robot_state){
     case IDLE:
@@ -32,20 +32,21 @@ void loop(){
       Serial.println("Idle");
       if (switchOn()) {
         robot_state = MOVE_TO_BLOCKS;
+        //red_block = true;
         //set_drive(FORWARDS, 255);
         start_time = millis();
         // Raise arm
         pickup_block(0,50);
+        turn_and_check_left(45, 10, false); //turns to align with wall
       }
       break;
     case MOVE_TO_BLOCKS:
       Serial.println("Move along wall");
-      //Turns to align with wall and starts driving
-      turn_and_check_left(45, 10, false);
+
       set_drive(FORWARDS, drive_speed);
       //Follows wall round to the other side of the arena
-      follow_wall(1, 100000, false, lower_wall_bound_1, upper_wall_bound_1, true);
-      follow_wall(1 ,150000, true, lower_wall_bound_2, upper_wall_bound_2, false);
+      follow_wall(1, 18000, false, lower_wall_bound_1, upper_wall_bound_1, true);
+      follow_wall(1 ,18000, true, 10, 15, false);
       set_drive(STATIONARY, drive_speed);
       ledState=LOW; //Turns off LED now stationary
       delay(1000);
@@ -66,9 +67,17 @@ void loop(){
       
     case SWEEP_AREA: 
       Serial.println("Sweep strip ");
-      for (int i = 0; i < 5; i++){
+      for (int i = 0; i < 4; i++){
         if (sweep_strip()){
           robot_state  = IDENTIFY_BLOCK;
+          ledState = 0;
+          break;
+        }
+      }
+      for (int i = 0; i < 4; i++){
+        if (sweep_strip_left()){
+          robot_state  = IDENTIFY_BLOCK;
+          ledState = 0;
           break;
         }
       }
@@ -140,6 +149,8 @@ void loop(){
       } 
      break;
     case IDENTIFY_BLOCK:
+    ledState = 0;
+
       if (!blockSensor(50)) {
         drive_with_LED(800, 5, BACKWARDS);
         robot_state = SWEEP_AREA; break;};
@@ -153,28 +164,38 @@ void loop(){
 
       break;
     case MOVE_TO_DROP:
+    //red_block = true;
       //Returns home
       set_drive(FORWARDS, drive_speed);
-      follow_wall(1, 100000, false, lower_wall_bound_1, upper_wall_bound_1, true);
+      follow_wall(1, 18000, false, lower_wall_bound_1, upper_wall_bound_1, true);
 
       if (red_block){
-        follow_wall(1, 100000, false, lower_wall_bound_1, upper_wall_bound_1, true);
-        follow_wall(1 ,150000, true, lower_wall_bound_2, upper_wall_bound_2, true);
+        follow_wall(1, 18000, false, lower_wall_bound_1, upper_wall_bound_1, true);
+        turn_and_check_right(45, 10, false);
+        drive_with_LED(2000, 10, FORWARDS);
         deposit_block_and_reverse();
+        turn_and_check_left(50, 10, false);
+        move_until_corner_turn(10);
       }
       else{
-        follow_wall(1 ,150000, true, lower_wall_bound_2, upper_wall_bound_2, true);
+        Serial.println("Follow with sense");
+        follow_wall(1 ,18000, true, 20, 35, true);
         deposit_block_and_reverse();
+        move_until_corner_turn(10);
+        follow_wall(1, 18000, false, lower_wall_bound_1, upper_wall_bound_1, true);
+
       }
 
-      find_wall();
       robot_state = MOVE_TO_BLOCKS;
     
       break;
 
     case TEST:
-      Serial.println(analogRead(line2Pin));
-      delay(100);
+      turn_and_check_left(1800, 10, false);
+      set_drive(STATIONARY, drive_speed);
+      delay(10000);
+      turn_and_check_right(1800, 10, false);
+
       break;
   }
 }
