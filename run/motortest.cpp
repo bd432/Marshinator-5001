@@ -74,17 +74,10 @@ void pickup_block(double descent_angle ,double ascent_angle){
 // and then return the arm to its original position
 void block_dropoff_and_reset (double ascent_angle, double descent_angle){
   ArmMotor -> run(BACKWARD);
-  LED_check();
   delay(ascent_angle * arm_scale_factor);
   ArmMotor -> run(RELEASE);
-  LED_check();
-  delay(500);
-  LED_check();
-  delay(500);
-  LED_check();
+  delay(1000);
   ArmMotor -> run(FORWARD);
   delay(descent_angle * arm_scale_factor);
-  LED_check();
   ArmMotor -> run(RELEASE);
 }
-
